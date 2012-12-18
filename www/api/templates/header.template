@@ -1,0 +1,107 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:og="http://ogp.me/ns#"
+    xmlns:fb="http://www.facebook.com/2008/fbml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<?php 
+    foreach ($data['meta'] as $property => $content)
+        echo "<meta property=\"$property\" content=\"$content\" />";
+?>        
+<title><?php echo $data['title']?></title>
+<link href="/css/style.css" rel="stylesheet" type="text/css">
+<link rel="shortcut icon" href="/favicon.ico"  type="image/x-icon" />
+  <script type="text/javascript" src="/js/jquery-1.6.4.min.js"></script>
+
+<?php if ($data['use_maps']) { ?>
+
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false" type="text/javascript"></script>
+    <script type="text/javascript" src="/js/map.js"></script>
+    <script type="text/javascript" src="/css/style.js"></script>
+<?php } ?>
+
+<script type="text/javascript" src="https://apis.google.com/js/plusone.js"></script>
+
+<script>
+  (function() {
+    var node = document.createElement('script');
+    node.type = 'text/javascript';
+    node.async = true;
+    node.src = 'http://connect.facebook.net/en_US/all.js#xfbml=1';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(node, s);
+  })();
+
+// Now insert the node into the DOM, perhaps using insertBefore()
+</script>
+
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-25593503-1']);
+  _gaq.push(['_setDomainName', '.skytruth.org']);
+<?php 
+    if (array_key_exists('ga_actions', $data))
+        foreach ($data['ga_actions'] as $key=>$value)
+            if (is_array($value))
+                $value = implode ("','", $value);
+            echo "  _gaq.push(['$key', '$value']);\n";
+
+// http://blog.intlock.com/setting-google-analytics-campaign-tracking-using-javascript/
+// http://blog.intlock.com/_setcampvalues-for-google-analytics/
+
+?>  
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+</head>
+
+<?php if ($data['use_maps']) { ?>
+    <body onunload="setMapCookie()">
+<?php } else { ?>
+    <body>
+<?php } ?>
+
+
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+  <tr>
+    <td class="header">
+	  <table width="100%" border="0" cellpadding="0" cellspacing="0">
+	    <tr>
+		  <td class="alerts_header"><a href="http://skytruth.org/index.htm"><img src="http://skytruth.org/images/logo.jpg" width="287" height="45" border="0" alt="SkyTruth logo"></a></td>
+		  <td class="alerts_header"><h1>SkyTruth Alerts</h1></td>
+		  <td class="alerts_header_right"><a href="http://skytruth.org/contact.htm">CONTACT US</a> | <a href="http://skytruth.org/legal.htm">LEGAL</a> | <a href="http://skytruth.org/sitemap.htm">SITEMAP</a></td>
+		</tr>
+	  </table>	
+	</td>
+  </tr>
+  <tr>
+    <td><img src="http://skytruth.org/images/space.gif" width="1" height="1"></td>
+  </tr>
+  <tr>
+    <td class="content">
+    
+    <table width="960" border="0" cellpadding="0" cellspacing="0">
+      <tr valign="top">
+        <td>
+	<div style="float:right">
+<div id="fb-root">
+</div>
+<!--script src="http://connect.facebook.net/en_US/all.js#xfbml=1"></script--><fb:like href="" send="true" layout="button_count" width="90" show_faces="false" action="recommend" font=""></fb:like>        
+&nbsp;<a href="http://twitter.com/share" class="twitter-share-button" data-count="none">Tweet</a><script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>&nbsp;<g:plusone size="small" count="false"></g:plusone>
+	</div>	
+        <div>
+		<ul id="tab">
+		  <li><a href="/">Alerts</a></li>
+		  <li><a href="/subscribe">Subscribe</a></li>
+		  <li><a href="/about.php">About</a></li>
+		  <li><a href="/api.php">API</a></li>
+		  <li><a href="/support.php">Support Us</a></li>
+		</ul>
+		</div>
+		<div id="alerts">
+	<?php if (array_key_exists('error', $data)) echo "<p class='error_msg'>" . $data['error']. "</p>"; ?>
+

@@ -1,0 +1,29 @@
+<?php 
+header("Content-Type: application/vnd.google-earth.kml+xml");
+echo '<?xml version="1.0" encoding="utf-8"?>';
+?>
+<kml xmlns="http://www.opengis.net/kml/2.2"
+    xmlns:gx="http://www.google.com/kml/ext/2.2">
+<Document>
+    <name><?php echo $data['doc_name']?></name>
+    <description><![CDATA[
+  Recent environmental incident reports from <a href="">SkyTruth Alerts</a><br/>
+  Filter parameters: <?php echo $data['param_str']?>
+]]></description>  
+
+    <NetworkLink>
+      <name>SkyTruth Alerts Incident Reports</name>
+      <visibility>1</visibility>
+      <open>0</open>
+      <description>The most recent environmental alerts collected from multiple data sources by SkyTruth</description>
+      <Link>
+        <href><?php echo $data['feed_url']?></href>
+      </Link>
+    </NetworkLink>
+
+<?php if ($data['show_logo']) {  
+    require ('kml.logo.template');
+} ?>
+
+</Document>
+</kml>

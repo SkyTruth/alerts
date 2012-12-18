@@ -1,0 +1,16 @@
+<?php 
+header("Content-Type: application/vnd.google-earth.kml+xml");
+echo '<?xml version="1.0" encoding="utf-8"?>';
+?>
+<kml xmlns="http://www.opengis.net/kml/2.2"> 
+<Document>
+<?php 
+//require_once ('kml.style.template');
+
+foreach ($data['items'] as $item)
+{
+    require ('kml.item.template');
+}
+?>
+</Document>
+</kml>

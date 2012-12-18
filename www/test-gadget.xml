@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Module>
+
+  <ModulePrefs title="Include gadget (iframe)" title_url="http://sites.google.com/" description="Include another web page in your Google Site" thumbnail="http://www.gstatic.com/sites-gadgets/common/images/sites-icon-gadget-thumb.png" screenshot="http://www.gstatic.com/sites-gadgets/common/images/sites-icon-gadget-ss.png" height="800" width="600" author="SkyTruth" author_email="labs@skytruth.org">
+  </ModulePrefs>
+    <UserPref name="iframeURL" display_name="URL to content" required="true" datatype="string"></UserPref>
+    <UserPref name="scroll" display_name="Display scrollbar" default_value="auto" datatype="enum">
+      <EnumValue value="auto" display_value="Automatic"></EnumValue>
+      <EnumValue value="no" display_value="No"></EnumValue>
+      <EnumValue value="yes" display_value="Yes"></EnumValue>
+    </UserPref>
+
+<Content type="html" view="default,canvas"><![CDATA[
+<div id='dest' />
+
+<script type="text/javascript">
+
+alert('This gadget is added on ' + _unesc(_args()["source"]));
+
+  function doRender(){
+    // setup variables
+    var prefs = new _IG_Prefs();
+    var iframeURL = prefs.getString('iframeURL');
+    var scroll = prefs.getString('scroll');
+    var height = '100%';
+    var width = '100%';
+    if(gadgets.window){
+      var viewport = gadgets.window.getViewportDimensions();
+      if(viewport.width){
+        var width = viewport.width + 'px';
+      }
+      if(viewport.height){
+        var height = viewport.height + 'px';
+      }
+    }
+    var iframe = document.createElement('iframe');
+    iframe.setAttribute('width', width);
+    iframe.setAttribute('height', height + 'px');
+    iframe.setAttribute('frameborder','no');
+    if(scroll){
+      iframe.setAttribute('scrolling',scroll);
+    }
+    iframe.setAttribute('src', iframeURL);
+    var dest = document.getElementById('dest');
+    dest.appendChild(iframe);
+  }
+  gadgets.util.registerOnLoadHandler(doRender);
+</script>
+
+]]></Content>
+</Module>

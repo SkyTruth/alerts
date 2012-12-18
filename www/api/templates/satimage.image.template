@@ -1,0 +1,20 @@
+<?php 
+header("Content-Type: application/vnd.google-earth.kml+xml");
+echo '<?xml version="1.0" encoding="utf-8"?>';
+?>
+<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom">
+<GroundOverlay>
+	<name><?php echo $data['item']['name']?></name>
+        <description>
+            <![CDATA[<?php echo array_get('description', $data['item'], '')?>
+            ]]>
+        </description>
+	<Icon>
+		<href><?php echo $data['item']['url']?></href>
+		<viewBoundScale>0.75</viewBoundScale>
+	</Icon>
+
+    <TimeStamp><when><?php echo $data['item']['when']?></when></TimeStamp>
+	<?php echo $data['item']['kml']?>
+</GroundOverlay>
+</kml>

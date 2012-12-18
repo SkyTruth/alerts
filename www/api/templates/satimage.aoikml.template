@@ -1,0 +1,38 @@
+<?php 
+header("Content-Type: application/vnd.google-earth.kml+xml");
+echo '<?xml version="1.0" encoding="utf-8"?>';
+?>
+<kml xmlns="http://www.opengis.net/kml/2.2"
+    xmlns:gx="http://www.google.com/kml/ext/2.2">
+<Document>
+<?php if ($data['msg']) { ?>
+    <!-- <?php echo $data['msg']?> -->
+<?php } ?>	
+
+    <name><?php echo $data['doc_name']?></name>
+    <description><![CDATA[
+
+]]></description>  
+     
+<?php 
+    foreach ($data['items'] as $item)
+    {
+?>
+      <Placemark id="<?php echo $item['name']?>">
+        <name><?php echo htmlentities($item['name'])?></name>
+        <description>
+            <![CDATA[<?php echo $item['description']?>
+            <a href="<?php echo $item['url']?>">[Browse]</a>
+            ]]>
+        </description>
+		<styleUrl>http://alerts.skytruth.org/css/style.kml#aoi_outline</styleUrl>
+		<?php echo $item['kml']?>
+      </Placemark>
+      
+<?php
+    }
+?>
+	
+</Document>
+</kml>
+

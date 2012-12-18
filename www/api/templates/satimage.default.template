@@ -1,0 +1,43 @@
+<?php 
+header("Content-Type: application/vnd.google-earth.kml+xml");
+echo '<?xml version="1.0" encoding="utf-8"?>';
+?>
+<kml xmlns="http://www.opengis.net/kml/2.2"
+    xmlns:gx="http://www.google.com/kml/ext/2.2">
+<Document>
+<?php if ($data['msg']) { ?>
+    <!-- <?php echo $data['msg']?> -->
+<?php } ?>	
+
+    <name><?php echo $data['doc_name']?></name>
+    <description><![CDATA[
+
+]]></description>  
+     
+
+<?php 
+    foreach ($data['items'] as $item)
+    {
+?>        <NetworkLink>
+          <name><?php echo $item['name']?></name>
+          <visibility>1</visibility>
+          <open>0</open>
+          <description></description>
+          <refreshVisibility>0</refreshVisibility>
+          <flyToView>0</flyToView>
+          <Link>
+            <href><?php echo $item['url']?></href>
+            <refreshInterval>3600</refreshInterval>
+          </Link>
+          <TimeSpan>
+            <begin><?php echo $item['begin_span']?></begin>
+            <end><?php echo $item['end_span']?></end>
+          </TimeSpan>
+        </NetworkLink>        
+<?php
+    }
+?>
+
+</Document>
+</kml>
+

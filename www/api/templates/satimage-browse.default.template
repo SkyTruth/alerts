@@ -1,0 +1,67 @@
+<?php 
+require "header.template" ?>
+	<?php if (array_key_exists('error', $data)) echo "<p class='error_msg'>" . $data['error']. "</p>"; ?>
+
+<div style="float:right">
+<h3>System Status</h3>
+<div style="clear: both;"></div>
+
+    <table>
+<?php		
+    foreach ($data['status_items'] as $item)
+    {
+?>
+        <tr><th align="right"><?php echo $item['label'] ?></th><td><?php echo $item['value'] ?></td></tr>
+<?php   
+    }
+?>
+
+    </table>
+
+<h3><a href="<?php echo $data['aoi_browse_url']?>">Areas of Interest (AOI)</a></h3>
+<div style="clear: both;"></div>
+    
+    <table>
+<?php		
+    foreach ($data['aoi_items'] as $item)
+    {
+?>
+        <tr><td><a href="<?php echo $item['url']?>"><?php echo $item['name'] ?></a></td></tr>
+<?php   
+    }
+?>
+
+    </table>    
+</div>
+
+<h1><?php echo $data['title']?></h1>
+
+<div>
+<a href="http://labs.skytruth.org/data-sources/satellite-imagery-1/aster-image-processing-1/ASARTools.kmz?attredirects=0">View in Google Earth</a><br/>
+</div>
+
+
+<div>
+<p><strong>Recent Acquisitions</strong></p>
+<table>
+<tr><th>Acquired</th><th><th><th>Image</th></tr>
+
+<?php		
+    foreach ($data['geotiff_items'] as $item)
+    {
+?>
+    <tr>
+        <td><?php echo $item['acquired']?></td>
+        <td>&nbsp;</td>
+        <td><a href="<?php echo $item['geotiff_kml_url']?>"><?php echo $item['geotiff_img_name'] ?></a></td>
+    </tr>
+
+<?php
+    }
+?>
+</div>
+
+
+</table>
+<?php require "footer.template" ?>
+

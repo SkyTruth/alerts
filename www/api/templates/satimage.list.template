@@ -1,0 +1,48 @@
+<?php 
+require "header.template" ?>
+	<?php if (array_key_exists('error', $data)) echo "<p class='error_msg'>" . $data['error']. "</p>"; ?>
+<h1><img src="http://alerts.skytruth.org/markers/blue-dot-32x32.png"/><?php echo $data['title']?></h1>
+
+<div style="float:right">
+    <table>
+<?php		
+    foreach ($data['status_items'] as $item)
+    {
+?>
+        <tr><th align="right"><?php echo $item['label'] ?></th><td><?php echo $item['value'] ?></td></tr>
+<?php   
+    }
+?>
+
+    </table>
+</div>
+
+<div>
+<a href="<?php echo $data['geotiff_kml_url']?>">View All GeoTiffs in Google Earth</a><br/>
+<a href="<?php echo $data['footprint_kml_url']?>">View All ASAR Footprints in Google Earth</a>
+</div>
+
+
+<div>
+<h2>Recent Acquisitions</h2>
+<table>
+<tr><th>Acquisition Date</th><th>KML Link</th></tr>
+
+<?php		
+    foreach ($data['geotiff_items'] as $item)
+    {
+?>
+    <tr>
+        <td><?php echo $item['acquisition_date']?></td>
+        <td><a href="<?php echo $item['geotiff_kml_url']?>"><?php echo $item['geotiff_img_name'] ?></a></td>
+    </tr>
+
+<?php
+    }
+?>
+</div>
+
+
+</table>
+<?php require "footer.template" ?>
+

@@ -1,0 +1,144 @@
+<?php 
+header("Content-Type: application/vnd.google-earth.kml+xml");
+echo '<?xml version="1.0" encoding="utf-8"?>';
+?>
+<kml xmlns="http://www.opengis.net/kml/2.2"> 
+<Document>
+    <Style id="s_Source1_hl">
+      <IconStyle>
+      <Icon>
+        <href>http://alerts.skytruth.org/markers/NRC_marker.png</href>
+      </Icon>
+      <hotSpot x="0.5" y="0.5" xunits="fraction" yunits="fraction"/>
+    </IconStyle>
+    <LabelStyle>
+      <color>ffffffff</color>
+      <scale>0.8</scale>
+    </LabelStyle>
+  </Style>
+  <Style id="s_Source1">
+    <IconStyle>
+      <Icon>
+        <href>http://alerts.skytruth.org/markers/NRC_marker.png</href>
+      </Icon>
+      <hotSpot x="0.5" y="0.5" xunits="fraction" yunits="fraction"/>
+    </IconStyle>
+    <LabelStyle>
+      <color>ffffffff</color>
+      <scale>0</scale>
+    </LabelStyle>
+  </Style>
+  <StyleMap id="Src1">
+    <Pair>
+      <key>normal</key>
+      <styleUrl>#s_Source1</styleUrl>
+    </Pair>
+    <Pair>
+      <key>highlight</key>
+      <styleUrl>#s_Source1_hl</styleUrl>
+    </Pair>
+  </StyleMap>
+
+    <Style id="s_Source2_hl">
+      <IconStyle>
+      <Icon>
+        <href>http://alerts.skytruth.org/markers/st_google_marker4a.png</href>
+      </Icon>
+      <hotSpot x="0.5" y="0" xunits="fraction" yunits="fraction"/>
+    </IconStyle>
+    <LabelStyle>
+      <color>ffffffff</color>
+      <scale>0.8</scale>
+    </LabelStyle>
+  </Style>
+  <Style id="s_Source2">
+    <IconStyle>
+      <Icon>
+        <href>http://alerts.skytruth.org/markers/st_google_marker4a.png</href>
+      </Icon>
+      <hotSpot x="0.5" y="0" xunits="fraction" yunits="fraction"/>
+    </IconStyle>
+    <LabelStyle>
+      <color>ffffffff</color>
+      <scale>0</scale>
+    </LabelStyle>
+  </Style>
+  <StyleMap id="Src2">
+    <Pair>
+      <key>normal</key>
+      <styleUrl>#s_Source2</styleUrl>
+    </Pair>
+    <Pair>
+      <key>highlight</key>
+      <styleUrl>#s_Source2_hl</styleUrl>
+    </Pair>
+  </StyleMap>
+
+    <Style id="s_Source3_hl">
+      <IconStyle>
+      <Icon>
+        <href>http://alerts.skytruth.org/markers/NOAA_marker.png</href>
+      </Icon>
+      <hotSpot x="0.5" y="0.5" xunits="fraction" yunits="fraction"/>
+    </IconStyle>
+    <LabelStyle>
+      <color>ffffffff</color>
+      <scale>0.8</scale>
+    </LabelStyle>
+  </Style>
+  <Style id="s_Source3">
+    <IconStyle>
+      <Icon>
+        <href>http://alerts.skytruth.org/markers/NOAA_marker.png</href>
+      </Icon>
+      <hotSpot x="0.5" y="0.5" xunits="fraction" yunits="fraction"/>
+    </IconStyle>
+    <LabelStyle>
+      <color>ffffffff</color>
+      <scale>0</scale>
+    </LabelStyle>
+  </Style>
+  <StyleMap id="Src3">
+    <Pair>
+      <key>normal</key>
+      <styleUrl>#s_Source3</styleUrl>
+    </Pair>
+    <Pair>
+      <key>highlight</key>
+      <styleUrl>#s_Source3_hl</styleUrl>
+    </Pair>
+  </StyleMap>
+
+
+
+
+
+
+
+<?php 
+foreach ($data['items'] as $row)
+{
+?>
+  <Placemark id="<?php echo $row['id']?>">
+    <name><?php echo substr($row['updated'], 0, 10) . " " . $row['title']?></name>
+    <atom:link href="<?php echo $row['report_url']?>"/>     
+    <description>
+<![CDATA[<b><?php echo $row['title'] ?></b><br/>
+<?php echo $row['content']?>
+]]>
+    </description>
+    <styleUrl>#Src<?php echo $row['source_id']?></styleUrl>
+    <Point>
+      <coordinates><?php echo $row['lng']?>,<?php echo $row['lat']?>,0</coordinates>
+    </Point>
+    <TimeStamp>
+      <when><?php echo $row['updated_formatted']?></when>
+    </TimeStamp>
+    <Snippet maxLines="2"><?php echo "[" . $row['source_name'] . "] " . $row['updated'] ?></Snippet>
+  </Placemark>
+
+<?php
+}
+?>
+</Document>
+</kml>

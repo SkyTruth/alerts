@@ -1,0 +1,33 @@
+<?php 
+header("Content-Type: application/json");
+?>
+{ "feed":[
+<?php 
+    $first_item = true;
+    foreach ($data['items'] as $row)
+    {
+        if ($first_item) 
+            $first_item = false;
+        else 
+            echo ",";
+?>
+{
+    "id": "<?php echo $row['id']?>",
+    "source": "<?php echo $row['source_id']?>",
+    "title": <?php echo json_encode($row['title'])?>,
+    "link": "<?php echo $row['report_url']?>",
+    "description": <?php echo json_encode($row['content'])?>,
+    "lat": "<?php echo $row['lat']?>",
+    "lng": "<?php echo $row['lng']?>",
+    "published": "<?php echo $row['published_sequential']?>",
+    "updated": "<?php echo $row['published']?>",
+    "incident_datetime": "<?php echo $row['incident_datetime']?>"    
+}
+<?php
+    }
+?>
+
+]<?php if ($data['debug']) echo ",\n \"debug\": " . json_encode($data['debug']); ?>
+
+}
+

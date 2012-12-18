@@ -1,0 +1,44 @@
+<?php 
+header("Content-Type: application/atom+xml");
+echo '<?xml version="1.0" encoding="utf-8"?>'
+?>
+<feed xmlns="http://www.w3.org/2005/Atom" 
+  xmlns:georss="http://www.georss.org/georss">
+  <title>Skytruth Alerts</title>
+  <subtitle>Environmental incident alert system from SkyTruth</subtitle>
+  <link href="http://alerts.skytruth.org/"/>
+  <link rel="self" href="<?php echo $data['self_url']?>"/>
+  <updated><?php echo $data['feed_updated']?></updated>
+  <author>
+    <name>Skytruth</name>
+    <email>info@skytruth.org</email>
+  </author>
+  <id>urn:uuid:5b00cfa9-9074-4098-b61b-415f517a4c02</id>
+
+<?php 
+foreach ($data['items'] as $row)
+{
+?>
+  <entry>
+    <title><?php echo htmlentities($row['title']) ?></title>
+    <link rel="alternate" href="<?php echo $row['report_url']?>"/>
+    <id>urn:uuid:<?php echo $row['id']?></id>
+    <updated><?php echo $row['published_formatted']?></updated>
+    <published><?php echo $row['published_formatted']?></published>
+    <summary><?php echo htmlentities($row['summary'])?></summary>
+    <content type="html"><?php echo htmlentities($row['content'])?></content>
+    <georss:point><?php echo $row['lat']?> <?php echo $row['lng']?></georss:point> 
+<?php  
+    if (array_key_exists($row['id'], $data['tags']))
+        foreach ($data['tags'][$row['id']] as $tag)
+        {
+?>
+        <category scheme="http://alerts.skytruth.org/atom/ns#" term="<?php echo htmlentities($tag)?>"></category>
+<?php
+        }
+?>    
+  </entry>
+<?php
+}
+?>
+</feed>

@@ -1,0 +1,72 @@
+<?php 
+header("Content-Type: application/vnd.google-earth.kml+xml");
+echo '<?xml version="1.0" encoding="utf-8"?>';
+?>
+<kml xmlns="http://www.opengis.net/kml/2.2"
+    xmlns:gx="http://www.google.com/kml/ext/2.2">
+<Document>
+<?php if ($data['msg']) { ?>
+    <!-- <?php echo $data['msg']?> -->
+<?php } ?>	
+
+    <name><?php echo $data['doc_name']?></name>
+    <description><![CDATA[
+
+]]></description>  
+     
+	<Folder>
+		<name>Available Imagery</name>
+<?php 
+    foreach ($data['preview_items'] as $item)
+    {
+?>
+      <Placemark id="<?php echo $item['name']?>">
+        <name><?php echo htmlentities($item['name'])?></name>
+        <description>
+            <![CDATA[<?php echo $item['description']?>]]>
+            <?php if ($item['preview_kml_url']) { ?>
+                <p><a href="<?php echo $item['preview_kml_url']?>">Load Preview Image</a><br/>
+                </p>
+            <?php } ?>
+        </description>
+		<styleUrl>http://alerts.skytruth.org/css/style.kml#region_outline</styleUrl>
+		<TimeStamp><when><?php echo $item['when']?></when></TimeStamp>
+		<?php echo $item['kml']?>
+      </Placemark>
+      
+<?php
+    }
+?>
+	</Folder>
+	
+	
+	<Folder>
+		<name>Processed Imagery</name>
+<?php		
+    foreach ($data['geotiff_items'] as $item)
+    {
+?>
+      <Placemark id="<?php echo $item['name']?>">
+        <name><?php echo htmlentities($item['name'])?></name>
+        <description>
+            <![CDATA[<?php echo $item['description']?>
+            <?php if ($item['geotiff_kml_url']) { ?>
+                <p><a href="<?php echo $item['geotiff_kml_url']?>">Load Image</a><br/>
+                </p>
+            <?php } ?>
+            ]]>
+        </description>
+		<styleUrl>http://alerts.skytruth.org/css/style.kml#geotiff_outline</styleUrl>
+		<TimeStamp><when><?php echo $item['when']?></when></TimeStamp>
+		<?php echo $item['kml']?>
+      </Placemark>
+      
+<?php
+    }
+?>
+	</Folder>
+	
+	
+</Document>
+</kml>
+

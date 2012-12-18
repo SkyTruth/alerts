@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+<Document>
+  <name>SkyTruth Alerts Map Styles</name>
+  
+	<Style id="aoi_outline">
+		<LineStyle>
+			<color>ff00ff00</color>
+			<width>2</width>
+		</LineStyle>
+		<PolyStyle>
+			<fill>0</fill>
+		</PolyStyle>
+	</Style>  
+	<Style id="region_outline">
+		<LineStyle>
+			<color>ffff0000</color>
+			<width>2</width>
+		</LineStyle>
+		<PolyStyle>
+			<fill>0</fill>
+		</PolyStyle>
+	</Style>  
+	<Style id="geotiff_outline">
+		<LineStyle>
+			<color>ff0000ff</color>
+			<width>2</width>
+		</LineStyle>
+		<PolyStyle>
+			<fill>0</fill>
+		</PolyStyle>
+	</Style>  
+	
+	  
+    <Style id="s_Source1_hl">
+      <IconStyle>
+        <scale>1.1</scale>  
+      <Icon>
+        <href>http://alerts.skytruth.org/markers/NRC_marker.png</href>
+      </Icon>
+      <hotSpot x="0.5" y="0.5" xunits="fraction" yunits="fraction"/>
+    </IconStyle>
+    <LabelStyle>
+      <color>ffffffff</color>
+      <scale>0.8</scale>
+    </LabelStyle>
+  </Style>
+  <Style id="s_Source1">
+    <IconStyle>
+      <Icon>
+        <href>http://alerts.skytruth.org/markers/NRC_marker.png</href>
+      </Icon>
+      <hotSpot x="0.5" y="0.5" xunits="fraction" yunits="fraction"/>
+    </IconStyle>
+    <LabelStyle>
+      <color>ffffffff</color>
+      <scale>0</scale>
+    </LabelStyle>
+  </Style>
+  <StyleMap id="Src1">
+    <Pair>
+      <key>normal</key>
+      <styleUrl>http://alerts.skytruth.org/css/style.kml#s_Source1</styleUrl>
+    </Pair>
+    <Pair>
+      <key>highlight</key>
+      <styleUrl>http://alerts.skytruth.org/css/style.kml#s_Source1_hl</styleUrl>
+    </Pair>
+  </StyleMap>
+
+    <Style id="s_Source2_hl">
+      <IconStyle>
+        <scale>1.1</scale>  
+      <Icon>
+        <href>http://alerts.skytruth.org/markers/st_google_marker4a.png</href>
+      </Icon>
+      <hotSpot x="0.5" y="0" xunits="fraction" yunits="fraction"/>
+    </IconStyle>
+    <LabelStyle>
+      <color>ffffffff</color>
+      <scale>0.8</scale>
+    </LabelStyle>
+  </Style>
+  <Style id="s_Source2">
+    <IconStyle>
+      <Icon>
+        <href>http://alerts.skytruth.org/markers/st_google_marker4a.png</href>
+      </Icon>
+      <hotSpot x="0.5" y="0" xunits="fraction" yunits="fraction"/>
+    </IconStyle>
+    <LabelStyle>
+      <color>ffffffff</color>
+      <scale>0</scale>
+    </LabelStyle>
+  </Style>
+  <StyleMap id="Src2">
+    <Pair>
+      <key>normal</key>
+      <styleUrl>http://alerts.skytruth.org/css/style.kml#s_Source2</styleUrl>
+    </Pair>
+    <Pair>
+      <key>highlight</key>
+      <styleUrl>http://alerts.skytruth.org/css/style.kml#s_Source2_hl</styleUrl>
+    </Pair>
+  </StyleMap>
+
+    <Style id="s_Source3_hl">
+      <IconStyle>
+        <scale>1.1</scale>  
+      <Icon>
+        <href>http://alerts.skytruth.org/markers/NOAA_marker.png</href>
+      </Icon>
+      <hotSpot x="0.5" y="0.5" xunits="fraction" yunits="fraction"/>
+    </IconStyle>
+    <LabelStyle>
+      <color>ffffffff</color>
+      <scale>0.8</scale>
+    </LabelStyle>
+  </Style>
+  <Style id="s_Source3">
+    <IconStyle>
+      <Icon>
+        <href>http://alerts.skytruth.org/markers/NOAA_marker.png</href>
+      </Icon>
+      <hotSpot x="0.5" y="0.5" xunits="fraction" yunits="fraction"/>
+    </IconStyle>
+    <LabelStyle>
+      <color>ffffffff</color>
+      <scale>0</scale>
+    </LabelStyle>
+  </Style>
+  <StyleMap id="Src3">
+    <Pair>
+      <key>normal</key>
+      <styleUrl>http://alerts.skytruth.org/css/style.kml#s_Source3</styleUrl>
+    </Pair>
+    <Pair>
+      <key>highlight</key>
+      <styleUrl>http://alerts.skytruth.org/css/style.kml#s_Source3_hl</styleUrl>
+    </Pair>
+  </StyleMap>
+  
+  
+    <Style id="s_Source4_hl">
+    <IconStyle>
+      <scale>1.1</scale>
+      <Icon>
+        <href>http://alerts.skytruth.org/markers/purple-triangle-up.png</href>
+      </Icon>
+      <hotSpot x="0.5" y="0.5" xunits="fraction" yunits="fraction"/>
+    </IconStyle>
+    <LabelStyle>
+      <color>ffffffff</color>
+      <scale>0.8</scale>
+    </LabelStyle>
+  </Style>
+  <Style id="s_Source4">
+    <IconStyle>
+      <Icon>
+        <href>http://alerts.skytruth.org/markers/purple-triangle-up.png</href>
+      </Icon>
+      <hotSpot x="0.5" y="0.5" xunits="fraction" yunits="fraction"/>
+    </IconStyle>
+    <LabelStyle>
+      <color>ffffffff</color>
+      <scale>0</scale>
+    </LabelStyle>
+  </Style>
+  <StyleMap id="Src4">
+    <Pair>
+      <key>normal</key>
+      <styleUrl>http://alerts.skytruth.org/css/style.kml#s_Source4</styleUrl>
+    </Pair>
+    <Pair>
+      <key>highlight</key>
+      <styleUrl>http://alerts.skytruth.org/css/style.kml#s_Source4_hl</styleUrl>
+    </Pair>
+  </StyleMap>  
+  
+  <Style id="s_Source5_hl">
+      <IconStyle>
+        <scale>1.1</scale>
+      <Icon>
+        <href>http://alerts.skytruth.org/markers/red_triangle_up.png</href>
+      </Icon>
+      <hotSpot x="0.5" y="0.5" xunits="fraction" yunits="fraction"/>
+    </IconStyle>
+    <LabelStyle>
+      <color>ffffffff</color>
+      <scale>0.8</scale>
+    </LabelStyle>
+  </Style>
+  <Style id="s_Source5">
+    <IconStyle>
+      <Icon>
+        <href>http://alerts.skytruth.org/markers/red_triangle_up.png</href>
+      </Icon>
+      <hotSpot x="0.5" y="0.5" xunits="fraction" yunits="fraction"/>
+    </IconStyle>
+    <LabelStyle>
+      <color>ffffffff</color>
+      <scale>0</scale>
+    </LabelStyle>
+  </Style>
+  <StyleMap id="Src5">
+    <Pair>
+      <key>normal</key>
+      <styleUrl>http://alerts.skytruth.org/css/style.kml#s_Source5</styleUrl>
+    </Pair>
+    <Pair>
+      <key>highlight</key>
+      <styleUrl>http://alerts.skytruth.org/css/style.kml#s_Source5_hl</styleUrl>
+    </Pair>
+  </StyleMap>  
+  
+  
+  <Style id="s_Source6_hl">
+      <IconStyle>
+        <scale>1.1</scale>
+      <Icon>
+        <href>http://alerts.skytruth.org/markers/usgs.gov.png</href>
+      </Icon>
+      <hotSpot x="0.5" y="0.5" xunits="fraction" yunits="fraction"/>
+    </IconStyle>
+    <LabelStyle>
+      <color>ffffffff</color>
+      <scale>0.8</scale>
+    </LabelStyle>
+  </Style>
+  <Style id="s_Source6">
+    <IconStyle>
+      <Icon>
+        <href>http://alerts.skytruth.org/markers/usgs.gov.png</href>
+      </Icon>
+      <hotSpot x="0.5" y="0.5" xunits="fraction" yunits="fraction"/>
+    </IconStyle>
+    <LabelStyle>
+      <color>ffffffff</color>
+      <scale>0</scale>
+    </LabelStyle>
+  </Style>
+  <StyleMap id="Src6">
+    <Pair>
+      <key>normal</key>
+      <styleUrl>http://alerts.skytruth.org/css/style.kml#s_Source6</styleUrl>
+    </Pair>
+    <Pair>
+      <key>highlight</key>
+      <styleUrl>http://alerts.skytruth.org/css/style.kml#s_Source6_hl</styleUrl>
+    </Pair>
+  </StyleMap>    
+
+
+  <StyleMap id="Src7">
+    <Pair>
+      <key>normal</key>
+      <styleUrl>http://alerts.skytruth.org/css/style.kml#s_Source4</styleUrl>
+    </Pair>
+    <Pair>
+      <key>highlight</key>
+      <styleUrl>http://alerts.skytruth.org/css/style.kml#s_Source4_hl</styleUrl>
+    </Pair>
+  </StyleMap>  
+  
+  
+
+  <StyleMap id="Src8">
+    <Pair>
+      <key>normal</key>
+      <styleUrl>http://alerts.skytruth.org/css/style.kml#s_Source5</styleUrl>
+    </Pair>
+    <Pair>
+      <key>highlight</key>
+      <styleUrl>http://alerts.skytruth.org/css/style.kml#s_Source5_hl</styleUrl>
+    </Pair>
+  </StyleMap>    
+
+  <Style id="s_Source9_hl">
+      <IconStyle>
+        <scale>1.1</scale>
+      <Icon>
+        <href>http://alerts.skytruth.org/markers/yellow_triangle_up.png</href>
+      </Icon>
+      <hotSpot x="0.5" y="0.5" xunits="fraction" yunits="fraction"/>
+    </IconStyle>
+    <LabelStyle>
+      <color>ffffffff</color>
+      <scale>0.8</scale>
+    </LabelStyle>
+  </Style>
+  <Style id="s_Source9">
+    <IconStyle>
+      <Icon>
+        <href>http://alerts.skytruth.org/markers/yellow_triangle_up.png</href>
+      </Icon>
+      <hotSpot x="0.5" y="0.5" xunits="fraction" yunits="fraction"/>
+    </IconStyle>
+    <LabelStyle>
+      <color>ffffffff</color>
+      <scale>0</scale>
+    </LabelStyle>
+  </Style>
+  <StyleMap id="Src9">
+    <Pair>
+      <key>normal</key>
+      <styleUrl>http://alerts.skytruth.org/css/style.kml#s_Source9</styleUrl>
+    </Pair>
+    <Pair>
+      <key>highlight</key>
+      <styleUrl>http://alerts.skytruth.org/css/style.kml#s_Source9_hl</styleUrl>
+    </Pair>
+  </StyleMap>  
+
+
+  <Style id="s_Source10_hl">
+      <IconStyle>
+        <scale>1.1</scale>
+      <Icon>
+        <href>http://alerts.skytruth.org/markers/red-x.png</href>
+      </Icon>
+      <hotSpot x="0.5" y="0.5" xunits="fraction" yunits="fraction"/>
+    </IconStyle>
+    <LabelStyle>
+      <color>ffffffff</color>
+      <scale>0.8</scale>
+    </LabelStyle>
+  </Style>
+  <Style id="s_Source10">
+    <IconStyle>
+      <Icon>
+        <href>http://alerts.skytruth.org/markers/red-x.png</href>
+      </Icon>
+      <hotSpot x="0.5" y="0.5" xunits="fraction" yunits="fraction"/>
+    </IconStyle>
+    <LabelStyle>
+      <color>ffffffff</color>
+      <scale>0</scale>
+    </LabelStyle>
+  </Style>
+  <StyleMap id="Src9">
+    <Pair>
+      <key>normal</key>
+      <styleUrl>http://alerts.skytruth.org/css/style.kml#s_Source10</styleUrl>
+    </Pair>
+    <Pair>
+      <key>highlight</key>
+      <styleUrl>http://alerts.skytruth.org/css/style.kml#s_Source10_hl</styleUrl>
+    </Pair>
+  </StyleMap>  
+  
+</Document>
+</kml>
+    
+  

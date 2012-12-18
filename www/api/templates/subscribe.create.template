@@ -1,0 +1,50 @@
+<?php require "header.template" ?>
+  <h2>My SkyTruth Alerts Subscriptions</h2>
+  <div id="email">&nbsp;(for email <?php echo $data['subscription']['email'] ?>)</div>
+  <div style="clear: both;"></div>
+  <div class="inset_box3">
+	<div id="alert_text">
+	  <h2>Subscription Confirmation Email Has Been Sent</h2>
+      <div style="clear: both;"></div>
+	  <div><strong>Awaiting Confirmation</strong>. An email subscription has been created for this region for email: <?php echo $data['subscription']['email'] ?>.  You should receive a confirmation email shortly.  For security purposes, you must click the link in the confirmation email in order to start your subscription.</div>
+    </div>  
+	<div id="map_med"><img src="<?php echo $data['subscription']['image_url'] ?>" alt="Subscription coverage map" width="200" height="200" /><br />
+	</div>
+	<div style="clear: both;"></div>
+  </div>
+<div style="clear: both;"></div>
+
+
+
+<!--table class="alert_content" border="0" cellpadding="0" cellspacing="0">
+  <tr>
+    <td colspan="2">
+	  <h2>Subscription Confirmation Sent</h2>
+	</td>
+  </tr>
+
+  <tr valign="top">
+    <td>
+<p><b>Awaiting Confirmation</b>. An email subscription has been created for this region for email: <?php echo $data['subscription']['email'] ?>.  You should receive a confirmation email shortly.  For security purposes, you must click the link in the confirmation email in order to start your subscription.</p>
+
+	</td>
+    <td>
+        <img src="<?php echo $data['subscription']['image_url'] ?>"/>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2">&nbsp;</td>
+  </tr>	
+  <tr>
+    <td colspan="2" align="center">
+	</td>
+  </tr>	
+</table--!>	        
+
+  
+<?php require "footer.template" ?>
+
+
+
+
+

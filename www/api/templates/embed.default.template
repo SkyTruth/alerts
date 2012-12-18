@@ -1,0 +1,187 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:og="http://ogp.me/ns#"
+    xmlns:fb="http://www.facebook.com/2008/fbml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>SkyTruth Alerts Embedded</title>
+<link href="/css/style.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="/js/jquery-1.6.4.min.js"></script>
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false" type="text/javascript"></script>
+<script type="text/javascript" src="/js/map.js"></script>
+<script type="text/javascript" src="/css/style.js"></script>
+<style>
+    html,body {
+        height: <?php echo $data['height']?>;
+        margin: 0px 0px 0px 0px;
+    }
+    #content {
+        width: <?php echo $data['width']?>;
+        height: <?php echo $data['height']?>;
+    }
+
+    #side_bar {
+        float: left;
+        width: <?php echo $data['side_bar']['width']?>;
+        height: <?php echo $data['side_bar']['height']?>;
+        overflow: auto
+    }
+    
+    #map {
+        float: right;
+        width: <?php echo $data['map']['width']?>;
+        height: <?php echo $data['map']['height']?>;
+    }
+    #notify_bar {
+        height: 24px;
+        border-style: solid;
+        border-width: 0 0 1px 0;
+        border-color: #CCC;
+        padding: 2px;
+        vertical-align: middle;
+        font-size: 13px;
+    }
+    .notify_bar_elt {
+        vertical-align: middle;
+        display: table-cell;
+        height: 24px;
+        padding-right: 5px; 
+    }
+</style>
+
+<script type="text/javascript">
+
+   
+    show_hide ("rss_popup");
+</script>
+
+
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-25593503-1']);
+  _gaq.push(['_setDomainName', '.skytruth.org']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+function show_hide(div_id) {
+    var div = document.getElementById(div_id);
+    if (div)
+    {
+        var display = div.style.display;
+        if (display == "none")
+            display = "block";
+        else
+            display = "none";
+        div.style.display = display;
+    }
+}
+
+</script>
+</head>
+<body onunload="setMapCookie()" marginwidth="0" marginheight="0">
+<div id="content">
+<?php if ($data['notify_bar']) { ?>
+    <div id="notify_bar">
+        <div style="float: right;"><a href="<?php echo $data['rss_url']?>" target="_top"><img width="24" height="24" src="http://www.skytruth.org/images/feed-icon-28x28.png"/></a>
+        </div>
+        <form xmlns="http://www.w3.org/1999/xhtml" action="http://alerts.skytruth.org/subscribe/create" target="_top">
+        
+        <div style="vertical-align: middle;display: table-cell;">
+            <input name="rss_url" type="hidden" value="<?php echo $data['rss_url']?>"/>
+            
+            <div class="notify_bar_elt">
+            <a href="javascript:show_hide('notify_popup')" ><img width="24" height="24" src="http://www.skytruth.org/images/mail-icon-28x28.png"/></a>
+            </div>
+    
+            <div class="notify_bar_elt">
+            <strong>Get <?php echo $data['region_name'] ?> Email Alerts: </strong>
+            </div>
+            
+            <div class="notify_bar_elt">
+            <input name="email" size="30" type="text" value=""/> 
+            </div>
+            
+            <div class="notify_bar_elt">
+            <input type="submit" value="Sign Up"/> 
+            </div>
+            
+            <div class="notify_bar_elt">
+            <a href="javascript:show_hide('notify_popup')" ><img width="16" height="16" src="http://www.skytruth.org/images/question-mark-16x16.jpg"/></a>
+            </div>
+            
+            <div class="notify_bar_elt">
+            <a href="javascript:show_hide('notify_popup')" >What's This?</a>
+            </div>
+        </div>        
+        </form>
+
+
+
+    </div>
+    <div id="notify_popup" style="display: none; position: absolute; z-index: 7; background-color: white; border: 1px solid #CCC; padding:10px; text-align:left;margin:10px;">
+        <div style="float:right"><a href="javascript:show_hide('notify_popup')"><img width="16" height="16" src="http://www.skytruth.org/images/close.gif"/></a></div>
+        <img width="16" height="16" src="http://www.skytruth.org/images/question-mark-16x16.jpg"/>
+        <p>Want to be notified whenever there's a new report in <strong><?php echo $data['region_name'] ?></strong>? </p><p>Enter your email address here and we'll notify you whenever we post something new,<br/>and we promise not to send you more than one email in the same day.</p>
+        <p>You can turn off email notifications at any time by clicking the "Unsubscribe" link<br/>at the bottom of the email.</p>
+        <form xmlns="http://www.w3.org/1999/xhtml" action="http://alerts.skytruth.org/subscribe/create" target=="_top">
+            <input name="rss_url" type="hidden" value="<?php echo $data['rss_url']?>"/>
+            <strong>Email Address: </strong><input name="email" size="30" type="text" value="" />
+            <input type="submit" value="Sign Up"/>
+        </form>        
+    </div>
+
+    
+<?php } ?>
+
+
+<?php if ($data['height'] == '100%') { ?>
+
+    <?php if ($data['side_bar']['visible']) { ?>
+        <div id="side_bar">Loading...</div>
+    <?php } ?>
+        <div id="map"></div>
+
+<?php } else {?>
+
+    <table width="100%" border=0 cellpadding=0 cellspacing=0><tr>
+    <?php if ($data['side_bar']['visible']) { ?>
+        <td><div id="side_bar">Loading...</div></td>
+    <?php } ?>
+        <td><div id="map"></div></td>
+    </tr></table>   
+
+
+<?php } ?>
+
+</div>
+<script type="text/javascript"> 
+//<![CDATA[
+<?php foreach ($data['feed_params'] as $key=>$value)
+    echo "mapOptions.feedParams.$key = \"$value\";";
+?>
+<?php if (!empty ($data['map_bounds'])) { ?>
+    mapOptions.bounds = new google.maps.LatLngBounds (new google.maps.LatLng(<?php echo $data['map_bounds'][0][0] ?>, <?php echo $data['map_bounds'][0][1] ?> ), 
+        new google.maps.LatLng(<?php echo $data['map_bounds'][1][0] ?>, <?php echo $data['map_bounds'][1][1] ?>));
+<?php } ?>
+        
+//    var debug_div = document.getElementById("debug");
+//    debug_div.innerHTML = "width: " + map_div.offsetWidth + " height: " + map_div.offsetHeight;
+
+    initMap ('alerts_map');
+    
+$(window).resize(function() {
+    google.maps.event.trigger(map, 'resize');
+    if (mapOptions.bounds)
+        map.fitBounds (mapOptions.bounds);
+});    
+//]]>
+</script> 
+</body>
+</html>
+

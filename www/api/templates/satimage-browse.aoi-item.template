@@ -1,0 +1,33 @@
+<?php 
+require "header.template" ?>
+
+<h1><?php echo $data['title']?></h1>
+
+<div>
+<?php echo $data['item']['description']?>
+</div>
+
+<h2>Recent Images in this AOI</h2>
+<div style="clear: both;"></div>
+<div>
+<table>
+<tr><th width>Acquisition Date</th><th>Image</th></tr>
+
+<?php		
+    foreach ($data['image_items'] as $item)
+    {
+?>
+    <tr>
+        <td><?php echo $item['acquisition_date']?></td>
+        <td><a href="<?php echo $item['url']?>"><?php echo $item['name']?></a></td>
+    </tr>
+
+<?php
+    }
+?>
+</div>
+
+
+</table>
+<?php require "footer.template" ?>
+

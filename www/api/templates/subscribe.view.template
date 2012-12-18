@@ -1,0 +1,142 @@
+<?php require "header.template" ?>
+<table class="alert_content" border="0" cellpadding="0" cellspacing="0">
+  <tr>
+    <td colspan="2">
+	  <h2>Subscribe to Alerts</h2>
+	  <p>Get notified whenever a new incident is reported in the shaded area on the map.</p>
+	</td>
+  </tr>
+
+  <tr valign="top">
+    <td width="50%">
+	  <div class="inset_box2">
+      <h3><img border="0" src="http://www.skytruth.org/images/feed-icon-28x28.png"> RSS</h3>
+	<p>Click to select your favorite news reader below:</p>   
+
+
+<a href="http://add.my.yahoo.com/rss?url=<?php echo $data['subscription']['rss_url']?>"><img src="http://us.i1.yimg.com/us.yimg.com/i/us/my/addtomyyahoo4.gif" width="91" height="17" alt="addtomyyahoo4"></a>
+
+<a class="img" href="http://www.newsgator.com/ngs/subscriber/subext.aspx?url=<?php echo $data['subscription']['rss_url']?>"><img src="http://www.newsgator.com/images/ngsub1.gif" alt="Subscribe in NewsGator Online"></a>
+
+<a href="http://feeds.my.aol.com/add.jsp?url=<?php echo $data['subscription']['rss_url']?>"><img src="http://o.aolcdn.com/myfeeds/html/vis/myaol_cta1.gif" alt="Add to My AOL" border="0"></a> 
+
+<a class="img" href="http://www.bloglines.com/sub/<?php echo $data['subscription']['rss_url']?>"><img src="http://www.bloglines.com/images/sub_modern5.gif" alt="Subscribe with Bloglines"></a>
+
+<a href="http://www.netvibes.com/subscribe.php?url=<?php echo $data['subscription']['rss_url']?>"><img src="http://www.netvibes.com/img/add2netvibes.gif" alt="Add to netvibes"></a> 
+<br/>
+<a href="http://fusion.google.com/add?feedurl=<?php echo $data['subscription']['rss_url']?>"><img src="http://buttons.googlesyndication.com/fusion/add.gif" width="104" height="17" alt="Add to Google"></a>
+
+<a href="http://www.pageflakes.com/subscribe.aspx?url=<?php echo $data['subscription']['rss_url']?>"><img src="http://www.pageflakes.com/subscribe2.gif" border="0"></a> 
+
+<a href="<?php echo $data['subscription']['rss_url']?>"><img src="http://feedburner.google.com/fb/lib/images/icons/feed-icon-12x12-orange.gif" alt="original feed"></a> <a href="<?php echo $data['subscription']['rss_url']?>">View Feed XML</a> 
+	  </div>
+	</td>
+	<td width="50%">
+	  <div class="inset_box2">
+      <h3><img border="0" src="http://www.skytruth.org/images/mail-icon-28x28.png"> Email</h3>
+<?php
+    switch ($data['subscription']['status'])
+    {
+     
+        case 'unsubscribed': ?>
+        
+	<p><b>Unsubscribed</b>  Your email subscription has been canceled.</p>
+	
+<?php
+        default:
+        case 'new': ?>
+        
+	<p>Enter your email address here to receive once daily notification whenever there are new incidents in the shaded area on the map.</p>
+	<form action="/subscribe">
+    	<input type="hidden" name="rss_url" value="<?php echo $data['subscription']['rss_url'] ?>" />
+	<table>
+	   <tr><th>Email Address: </th><td><input type="text" size="30" name="email" value="" /></td></tr>
+	   <tr><th></th><td><input type="submit" value="Subscribe" /></td></tr>
+    </table>
+	</form>        
+        
+<?php       break;
+        case 'created': ?>
+
+	<p><b>Awaiting Confirmation</b>. An email subscription has been created for this region for email: <?php echo $data['subscription']['email'] ?>.  You should receive a confirmation email shortly.  For security purposes, you must click the link in the confirmation email in order to start your subscription.</p>
+	
+
+	
+<?php       break;
+        case 'confirmed': ?>
+	<p><b>Confirmed.</b> Your email subscription has been confirmed.</p>
+<?php      
+        case 'active': ?>
+	<p>You email subscription is currently active.  To cancel this subscription and receive no more emails, click "Unsubscribe" below.</p>
+	
+	<form action="/subscribe">
+    	<input type="hidden" name="sid" value="<?php echo $data['subscription']['id'] ?>" />
+    	<input type="hidden" name="unsubscribe" value="1" />
+	<table>
+	   <tr><th>Email Address: </th><td><?php echo $data['subscription']['email'] ?></td></tr>
+	   <tr><th></th><td><input type="submit" value="Unsubscribe" /></td></tr>
+    </table>
+	</form>   
+
+
+<?php       break;
+    }	?>
+
+	  </div>
+	</td>
+  </tr>
+  <tr>
+    <td colspan="2">&nbsp;</td>
+  </tr>	
+  <tr>
+    <td colspan="2" align="center">
+	  <h3>Sample Feed</h3>
+    <table class="alert_content" border="0" cellpadding="0" cellspacing="0"> 
+	  <tr> 
+		<td class="sidebar" width="200" valign="top"> 
+		   <div id="side_bar" style="overflow: auto; width: 200px; height:400px">Loading...</div> 
+		</td> 
+		<td class="map" width="400"> 
+		   <div id="map" style="width: 400px; height: 400px"></div> 
+		</td> 
+	  </tr> 
+	</table> 
+	</td>
+  </tr>	
+</table>	        
+
+<script type="text/javascript"> 
+//<![CDATA[
+    bounds = new google.maps.LatLngBounds (new google.maps.LatLng(<?php echo join(',', $data['query']['bounds'][0])?>),
+        new google.maps.LatLng(<?php echo join(',', $data['query']['bounds'][1])?>));
+        
+<?php foreach ($data['feed_params'] as $key=>$value)
+    if ($value)
+        echo "mapOptions.feedParams.$key = \"$value\";";
+?>
+
+    mapOptions.feedParams.l = bounds.toUrlValue(4);
+        
+    initMap ('subscribe_map');
+    map.fitBounds (bounds);
+    var polygon = new google.maps.Polygon({
+        map: map,
+        paths: [
+        new google.maps.LatLng(<?php echo $data['query']['bounds'][0][0].",".$data['query']['bounds'][0][1]?>),
+        new google.maps.LatLng(<?php echo $data['query']['bounds'][1][0].",".$data['query']['bounds'][0][1]?>),
+        new google.maps.LatLng(<?php echo $data['query']['bounds'][1][0].",".$data['query']['bounds'][1][1]?>),
+        new google.maps.LatLng(<?php echo $data['query']['bounds'][0][0].",".$data['query']['bounds'][1][1]?>),
+        new google.maps.LatLng(<?php echo $data['query']['bounds'][0][0].",".$data['query']['bounds'][0][1]?>)
+        ], 
+        strokeColor: "#f33f00", strokeWeight: 5, strokeOpacity: 1, fillColor: "#ff0000", fillOpacity: 0.2});
+        
+//]]>
+</script> 
+
+		  
+<?php require "footer.template" ?>
+
+
+
+
+

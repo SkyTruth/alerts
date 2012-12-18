@@ -1,0 +1,12 @@
+  <Placemark id="<?php echo $item['id']?>">
+    <name><?php echo substr($item['incident_datetime'], 0, 10) . " " . htmlentities($item['title'])?></name>
+    <atom:link href="<?php echo $item['report_url']?>"/>     
+    <description>
+<![CDATA[<?php echo $item['content']?>]]>
+    </description>
+    <styleUrl>http://alerts.skytruth.org/css/style.kml#Src<?php echo $item['source_id']?></styleUrl>
+    <Point>
+      <coordinates><?php echo $item['lng']?>,<?php echo $item['lat']?>,0</coordinates>
+    </Point>
+    <Snippet maxLines="2"><?php echo "[" . $item['source_name'] . "] " . $item['incident_datetime'] ?></Snippet>
+  </Placemark>

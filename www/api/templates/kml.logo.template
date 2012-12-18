@@ -1,0 +1,13 @@
+
+    <ScreenOverlay id="skytruth_logo">
+      <name>SkyTruth Logo</name>
+      <description>SkyTruth</description>
+      <Icon>
+            <href>http://skytruth.org/images/logo-standard.jpg</href>
+      </Icon>
+      <overlayXY x="0" y="0" xunits="fraction" yunits="fraction"/>
+      <screenXY x="15" y=".05" xunits="pixels" yunits="fraction"/>
+      <size x="0" y=".05" xunits="fraction" yunits="fraction"/>
+      <color>ffffffff</color>  
+      
+    </ScreenOverlay>

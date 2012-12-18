@@ -1,0 +1,11 @@
+<?php require "header.template" ?>
+  <h2>My SkyTruth Alerts Subscriptions</h2>
+  <div id="email">&nbsp;</div>
+  <div style="clear: both;"></div>
+  <div class="inset_box3">
+    <h2>Subscribe Error</h2>
+    <div style="clear: both;"></div>
+	<p>Oops. Something went wrong with your subscription request. Please hit the browser back button and try again. If you continue to get this error message, please send us an email at <a href="mailto: info@skytruth.org">info@skytruth.org</a> and we'll take care of it right away.  </p>
+	<p>&nbsp;</p>
+  </div>
+<?php require "footer.template" ?>

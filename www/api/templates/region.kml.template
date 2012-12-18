@@ -1,0 +1,22 @@
+<?php 
+header("Content-Type: application/vnd.google-earth.kml+xml");
+echo '<?xml version="1.0" encoding="utf-8"?>';
+?>
+<kml xmlns="http://www.opengis.net/kml/2.2"> 
+<Document>
+<?php if ($data['msg']) { ?>
+    <!-- <?php echo $data['msg']?> -->
+<?php } ?>	
+
+<?php if ($data['row']) { ?>
+	<name><?php echo $data['row']['name']?></name>
+	<Placemark id="<?php echo $data['row']['id']?>">
+		<name>Outline of <?php echo $data['row']['name']?></name>
+		<styleUrl>http://alerts.skytruth.org/css/style.kml#region_outline</styleUrl>
+		<?php echo $data['row']['kml']?>
+	</Placemark>
+<?php } ?>	
+</Document>
+</kml>
+
+

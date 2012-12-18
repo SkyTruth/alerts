@@ -1,0 +1,169 @@
+<?php require "header.template" ?>
+  <h2>My SkyTruth Alerts Subscriptions</h2>
+  <div id="email">&nbsp;(for email <?php echo $data['subscription']['email'] ?>)</div>
+  <div style="clear: both;"></div>
+<?php if ($data['subscription']) { ?>
+
+  <div class="inset_box3">
+	<div id="alert_text">
+	
+    <?php switch ($data['action']) {
+        case 'confirm': ?>
+	
+      <h2>Email Subscription Confirmed</h2>
+      <div style="clear: both;"></div>
+	  <div><strong>Email Address:</strong> <?php echo $data['subscription']['email']?></div>
+	  <p><strong>Congratulations!</strong> Your email subscription has been confirmed. You should begin receiving daily email updates within the region shown in the next 24 hours, or whenever another incident occurs in this area.</p>
+
+    <?php        
+            break;    
+        case 'confirm-unsubscribe': ?>
+
+      <h2>Unsubscribe Confirmed</h2>
+      <div style="clear: both;"></div>
+	  <div><strong>Email Address:</strong> <?php echo $data['subscription']['email']?></div>
+	  <p>Email delivery of this subscription has been cancelled.</p>
+
+
+    <?php        
+            break;    
+        case 'unsubscribe': ?>
+
+      <h2>Confirm Unsubscribe</h2>
+      <div style="clear: both;"></div>
+	  <p>Please confirm that you want to unsubscribe from this email subscription.</p>
+  	  <form action="<?php echo $data['confirm_unsubscribe_url']?>">
+    	<input type="hidden" name="sid" value="<?php echo $data['subscription']['id'] ?>" />
+    	<div><strong>Email Address:</strong> <?php echo $data['subscription']['email'] ?></div>
+        <p><input type="submit" value="Unsubscribe" /></p>
+      </form> 
+
+    <?php        
+            break;  
+    } ?>         
+
+
+
+    </div>  
+	<div id="map_med"><img src="<?php echo $data['subscription']['image_url'] ?>" alt="Subscription coverage map" width="200" height="200" /><br />
+	</div>
+	<div style="clear: both;"></div>
+  </div>
+<?php } ?>
+  
+<div style="clear: both;"></div>
+
+
+
+<?php if (0) { ?>
+<table class="alert_content" border="0" cellpadding="0" cellspacing="0">
+  <tr>
+    <td colspan="2">
+	  <h2>My SkyTruth Alerts Subscriptions</h2>
+	  Subscription email: <b> <?php echo $data['email']?></b>
+	</td>
+  </tr>
+
+<?php if ($data['subscription']) { ?>
+  <tr valign="top">
+  <td>
+     <div class="inset_box2">
+
+    <?php switch ($data['action']) {
+        case 'confirm':
+?>
+        <table cellspacing="2"><tr valign="top">
+            <td><img src="<?php echo $data['subscription']['image_url'] ?>"/></td>
+        <td><h3>Email Subscription Confirmed</h3>
+            <p><b>Email Address:</b> <?php echo $data['subscription']['email']?></p>
+            <p><b>Congratulations!</b>  Your email subscription has been confirmed.  You should begin recieving daily email updates within the region shown in the next 24 hours, or whenever another incident occurs in this area.</p>
+        </td>
+        </tr></table>
+<?php        
+            break;    
+        case 'confirm-unsubscribe':
+?>
+    <table cellspacing="2"><tr valign="top">
+        <td><img src="<?php echo $data['subscription']['image_url'] ?>"/></td>
+        <td><h3>Unsubscribe Confirmed</h3>
+            <p><b>Email Address:</b> <?php echo $data['subscription']['email']?></p>
+	       <p>Email delivery of this subscription has been cancelled.</p>        
+        </td>
+    </tr></table>
+<?php        
+            break;    
+        case 'unsubscribe':
+?>
+    <table cellspacing="2"><tr valign="top">
+        <td><img src="<?php echo $data['subscription']['image_url'] ?>"/></td>
+        <td><h3>Confirm Unsubscribe</h3>
+        
+    <p>Please confirm that you want to unsubscribe from this email subscription.</p> 
+    	<form action="<?php echo $data['confirm_unsubscribe_url']?>">
+    	<input type="hidden" name="sid" value="<?php echo $data['subscription']['id'] ?>" />
+    	<table>
+    	   <tr><th>Email Address: </th><td><?php echo $data['subscription']['email'] ?></td></tr>
+    	   <tr><th></th><td><input type="submit" value="Unsubscribe" /></td></tr>
+        </table>
+	    </form> 
+    </td>
+    </tr></table>
+	    
+<?php        
+            break;  
+    }          
+?>
+    </div>        
+    </td>
+  </tr>      
+<?php } ?>
+<?php } ?>
+
+<?php if (count($data['my_subs']) > 1) { ?>
+<table class="alert_content" border="0" cellpadding="0" cellspacing="0">
+
+  <tr>
+    <td colspan="2">
+	  <hr/>
+	  <h2>My Other Subscriptions</h2>
+	</td>
+  </tr>
+
+  <tr>
+    <td>
+        <table cellspacing="2">
+        <?php foreach ($data['my_subs'] as $s) { ?>
+        <tr>
+            <td>
+                <img src="<?php echo $s['image_url'] ?>"/>
+            </td>
+            <td>
+                <table>
+                <tr><th align="right">Status:</th><td><?php echo $s['status']; 
+                    if ($s['action']) { ?>
+                    <a href="<?php echo $s['action_url']?>">[<?php echo $s['action']?>]</a>
+                    <?php } ?>
+                </td></tr>
+                <tr><th align="right">Last Email Sent:</th><td><?php echo $s['last_email_sent']?></td></tr>
+                <tr><th align="right">Last Alert Date:</th><td><?php echo $s['last_item_updated']?></td></tr>
+                </table>
+            </td>
+        </tr>
+        <?php }?>
+        </table>
+    </td>    
+  </tr>
+<?php } ?>
+
+ 
+</table>	        
+
+
+
+		  
+<?php require "footer.template" ?>
+
+
+
+
+

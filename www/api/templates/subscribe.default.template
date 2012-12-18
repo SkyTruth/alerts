@@ -1,0 +1,69 @@
+<?php 
+require "header.template" ?>
+	<div class="inset_box3">
+		<h2>Subscribe to Alerts</h2>
+        <div style="clear: both;"></div>
+		<p>If you want to stay informed about new incident reports in a particular area, but you don't want to have to come and check the site every day, you can subscribe to a custom alerts feed and you will be notifed by email whenever a new incident is reported within your area of interest.  </p>
+
+		<h2>How To Subscribe</h2>
+        <div style="clear: both;"></div>
+		<p>In order to create a custom feed, all you need to do is navigate on the map below and zoom in to your area of interest.  Then enter your email and click on the "Subscribe" button to create a subscription</p>
+		<p>Your subscription will only contain future alerts for incidents that are in the area that you selected with the map, so those are the only incidents for which you will be notified.</p>
+
+<script type="text/javascript"> 
+//<![CDATA[
+function subscribe (email) {
+    var rss_url = encodeURIComponent("<?php echo $data['rss_url']?>" + "?l=" + getCurrentMapBounds () + "&channel=stae");
+    window.location.href= "<?php echo $data['subscribe_create_url']?>?rss_url=" + rss_url + "&email=" + email;
+}  
+//]]>
+</script>      
+
+    	<form action="#" onsubmit="subscribe(this.email.value); return false;" >
+        	<table>
+        	   <tr><th>Email Address:</th><td><input type="text" size="30" name="email" value="" /></td><td><input type="submit" value="Subscribe" /></td></tr>
+            </table>
+	    </form> 
+	</div>
+
+
+	
+<table>
+    <tr><td colspan="2">
+        <div style="vertical-align: bottom; text-align: right; float: right;">
+        <form action="#" onsubmit="zoomToLocation(this.location.value); return false">
+            <b>Go To</b>: <input type="text" size="30" name="location" value="" />&nbsp;<input type="submit" value="Go!" />
+        </form>
+        </div>	
+    </td></tr>
+    
+    <tr> 
+    <td width="260" valign="top" class = "sidebar"> 
+        <div id="side_bar" style="overflow: auto; width: 260px; height:650px">Loading...</div> 
+    </td> 
+    <td width = 700 class="map"> 
+        <div id="map" style="width: 700px; height: 650px"></div> 
+    </td> 
+    </tr> 
+
+</table> 
+
+<script type="text/javascript"> 
+//<![CDATA[
+    mapOptions.feedParams.channel = 'local';
+<?php if (!empty ($data['map_bounds'])) { ?>
+    mapOptions.bounds = new google.maps.LatLngBounds (new google.maps.LatLng(<?php echo $data['map_bounds'][0][0] ?>, <?php echo $data['map_bounds'][0][1] ?> ), 
+        new google.maps.LatLng(<?php echo $data['map_bounds'][1][0] ?>, <?php echo $data['map_bounds'][1][1] ?>));
+<?php } ?>
+    initMap ('alerts_map');
+
+//    var kml = new GGeoXml("<?php echo make_url('/ge/recent.kml', array('nologo'=>1, 'channel'=>'local'))?>");
+//    map.addOverlay(kml);
+//]]>
+</script> 		  
+<?php require "footer.template" ?>
+
+
+
+
+
