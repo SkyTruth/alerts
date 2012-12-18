@@ -3,12 +3,12 @@
 $CONFIG['DBHOST'] = 'localhost';
 $CONFIG['DBNAME'] = 'NRC_Data';
 $CONFIG['DBUSER'] = 'scraper';
-$CONFIG['DBPASS'] = 'EsyfylE48CD2D0gB6V6Y';
+$CONFIG['DBPASS'] = 'CHANGE ME';
 
 $CONFIG['GEODBHOST'] = 'localhost';
 $CONFIG['GEODBNAME'] = 'alerts';
 $CONFIG['GEODBUSER'] = 'scraper';
-$CONFIG['GEODBPASS'] = 'EsyfylE48CD2D0gB6V6Y';
+$CONFIG['GEODBPASS'] = 'CHANGE ME';
 
 
 ?>
