@@ -337,7 +337,7 @@
       <scale>0</scale>
     </LabelStyle>
   </Style>
-  <StyleMap id="Src9">
+  <StyleMap id="Src10">
     <Pair>
       <key>normal</key>
       <styleUrl>http://alerts.skytruth.org/css/style.kml#s_Source10</styleUrl>
@@ -345,6 +345,17 @@
     <Pair>
       <key>highlight</key>
       <styleUrl>http://alerts.skytruth.org/css/style.kml#s_Source10_hl</styleUrl>
+    </Pair>
+  </StyleMap>  
+
+  <StyleMap id="Src1001">
+    <Pair>
+      <key>normal</key>
+      <styleUrl>http://alerts.skytruth.org/css/style.kml#s_Source9</styleUrl>
+    </Pair>
+    <Pair>
+      <key>highlight</key>
+      <styleUrl>http://alerts.skytruth.org/css/style.kml#s_Source9_hl</styleUrl>
     </Pair>
   </StyleMap>  
   
