@@ -5,7 +5,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>SkyTruth Alerts Embedded</title>
-<link href="/css/style.css" rel="stylesheet" type="text/css">
+<link href="./css/style.css" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="./js/jquery-1.6.4.min.js"></script>
 <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false" type="text/javascript"></script>
 <script type="text/javascript" src="./js/map.js"></script>
@@ -48,12 +48,6 @@
         padding-right: 5px; 
     }
 </style>
-
-<script type="text/javascript">
-
-   
-    show_hide ("rss_popup");
-</script>
 
 
 <script type="text/javascript">
@@ -177,7 +171,7 @@ function show_hide(div_id) {
 //    var debug_div = document.getElementById("debug");
 //    debug_div.innerHTML = "width: " + map_div.offsetWidth + " height: " + map_div.offsetHeight;
 
-    initMap (<?php echo $data['map_cookie_name'] ?>);
+    initMap ('<?php echo $data['map_cookie_name'] ?>');
     
 $(window).resize(function() {
     google.maps.event.trigger(map, 'resize');

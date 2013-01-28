@@ -2,7 +2,7 @@
 RewriteEngine On
 
 # Installation directory
-RewriteBase /
+RewriteBase /alerts/
 
 # Protect application and system files from being viewed
 RewriteRule ^(includes) - [F,L]
