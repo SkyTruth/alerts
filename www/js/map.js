@@ -18,14 +18,17 @@ var mapOptions = {
       },      
       mapTypeControl: true,
       bounds: null,
-      feedParams: { d: '30'}
+      feedParams: { d: '30'},
+      subscribe_url: '/subscribe',
+      feed_base_url: './',
+      region_kml_base_url: 'http://alerts.skytruth.org/region/'
     };
 var currentMapBouds = null;
 var markerImages = {}
 
     
 function subscribe (medium) {
-    window.location.href= "/subscribe?l=" + map.getBounds().toUrlValue(4) + "#" + medium;
+    window.location.href= mapOptions.subscribe_url + "?l=" + map.getBounds().toUrlValue(4) + "#" + medium;
 }
 
 function getCurrentMapBounds () {
@@ -153,7 +156,7 @@ function onMapChangeBounds (new_bounds)
     var params = jQuery.extend({}, mapOptions.feedParams);
     if (!params.l)
         params.l = new_bounds.toUrlValue(4);
-    $.getJSON('./json?', params, onFeedUpdate);
+    $.getJSON(mapOptions.feed_base_url + 'json', params, onFeedUpdate);
 }
 
 function initMap (_cookiename) { 
@@ -195,7 +198,7 @@ function initMap (_cookiename) {
     
     if (mapOptions.feedParams.region)
     {
-        var kmlLayer = new google.maps.KmlLayer('http://alerts.skytruth.org/region/' + mapOptions.feedParams.region + '.kml');
+        var kmlLayer = new google.maps.KmlLayer(mapOptions.region_kml_base_url + mapOptions.feedParams.region + '.kml');
         kmlLayer.setMap(map);    
     }
 }
