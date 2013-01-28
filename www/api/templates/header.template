@@ -36,18 +36,14 @@
 
 <script type="text/javascript">
   var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', 'UA-25593503-1']);
-  _gaq.push(['_setDomainName', '.skytruth.org']);
+  _gaq.push(['_setAccount', '<?php echo $CONFIG['GA_ACCOUNT'] ?>']);
+  _gaq.push(['_setDomainName', '<?php echo $CONFIG['GA_DOMAIN'] ?>']);
 <?php 
     if (array_key_exists('ga_actions', $data))
         foreach ($data['ga_actions'] as $key=>$value)
             if (is_array($value))
                 $value = implode ("','", $value);
             echo "  _gaq.push(['$key', '$value']);\n";
-
-// http://blog.intlock.com/setting-google-analytics-campaign-tracking-using-javascript/
-// http://blog.intlock.com/_setcampvalues-for-google-analytics/
-
 ?>  
   _gaq.push(['_trackPageview']);
 

@@ -66,8 +66,8 @@ unset ($feed_params['height']);
 unset ($feed_params['notify']);
 
 $data['feed_params'] = $feed_params;
-$data['feed_url'] = 'http://alerts.skytruth.org/ge/alerts.kml?' . http_build_query($feed_params, '', '&');
-$data['rss_url'] = 'http://alerts.skytruth.org/rss?' . http_build_query($feed_params, '', '&');
+//$data['feed_url'] = 'http://alerts.skytruth.org/ge/alerts.kml?' . http_build_query($feed_params, '', '&');
+$data['rss_url'] = $CONFIG['FEED_BASE_URL'] .'rss?' . http_build_query($feed_params, '', '&');
 
 require ("templates/embed.$output_template.template");
 

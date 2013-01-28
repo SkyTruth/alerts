@@ -59,8 +59,8 @@
 <script type="text/javascript">
 
   var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', 'UA-25593503-1']);
-  _gaq.push(['_setDomainName', '.skytruth.org']);
+  _gaq.push(['_setAccount', '<?php echo $CONFIG['GA_ACCOUNT']?>']);
+  _gaq.push(['_setDomainName', '<?php echo $CONFIG['GA_DOMAIN'] ?>']);
   _gaq.push(['_trackPageview']);
 
   (function() {
