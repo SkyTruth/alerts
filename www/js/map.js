@@ -153,7 +153,7 @@ function onMapChangeBounds (new_bounds)
     var params = jQuery.extend({}, mapOptions.feedParams);
     if (!params.l)
         params.l = new_bounds.toUrlValue(4);
-    $.getJSON('/json?', params, onFeedUpdate);
+    $.getJSON('./json?', params, onFeedUpdate);
 }
 
 function initMap (_cookiename) { 
