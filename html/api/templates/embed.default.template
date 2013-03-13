@@ -6,10 +6,10 @@
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>SkyTruth Alerts Embedded</title>
 <link href="/css/style.css" rel="stylesheet" type="text/css">
-<script type="text/javascript" src="./js/jquery-1.6.4.min.js"></script>
+<script type="text/javascript" src="/js/jquery-1.6.4.min.js"></script>
 <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false" type="text/javascript"></script>
-<script type="text/javascript" src="./js/map.js"></script>
-<script type="text/javascript" src="./css/style.js"></script>
+<script type="text/javascript" src="/js/map.js"></script>
+<script type="text/javascript" src="/css/style.js"></script>
 <style>
     html,body {
         height: <?php echo $data['height']?>;
@@ -59,8 +59,8 @@
 <script type="text/javascript">
 
   var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', '<?php echo $CONFIG['GA_ACCOUNT']?>']);
-  _gaq.push(['_setDomainName', '<?php echo $CONFIG['GA_DOMAIN'] ?>']);
+  _gaq.push(['_setAccount', 'UA-25593503-1']);
+  _gaq.push(['_setDomainName', '.skytruth.org']);
   _gaq.push(['_trackPageview']);
 
   (function() {
@@ -162,12 +162,8 @@ function show_hide(div_id) {
 </div>
 <script type="text/javascript"> 
 //<![CDATA[
-<?php 
-    foreach ($data['feed_params'] as $key=>$value)
-        echo "mapOptions.feedParams.$key = \"$value\";";
-    
-    foreach ($data['map_options'] as $key=>$value)
-        echo "mapOptions.$key = \"$value\";";
+<?php foreach ($data['feed_params'] as $key=>$value)
+    echo "mapOptions.feedParams.$key = \"$value\";";
 ?>
 <?php if (!empty ($data['map_bounds'])) { ?>
     mapOptions.bounds = new google.maps.LatLngBounds (new google.maps.LatLng(<?php echo $data['map_bounds'][0][0] ?>, <?php echo $data['map_bounds'][0][1] ?> ), 
@@ -177,7 +173,7 @@ function show_hide(div_id) {
 //    var debug_div = document.getElementById("debug");
 //    debug_div.innerHTML = "width: " + map_div.offsetWidth + " height: " + map_div.offsetHeight;
 
-    initMap (<?php echo $data['map_cookie_name'] ?>);
+    initMap ('alerts_map');
     
 $(window).resize(function() {
     google.maps.event.trigger(map, 'resize');

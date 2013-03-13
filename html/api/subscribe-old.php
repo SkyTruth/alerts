@@ -14,9 +14,9 @@ $data['use_maps'] = true;
 $data['meta'] = array ();
 $data['email'] = '';
 
-$sid = array_key_exists('sid', $_REQUEST) ? pg_escape_string ($_REQUEST['sid']) : '';
-$email = array_key_exists('email', $_REQUEST) ? pg_escape_string ($_REQUEST['email']) : '';
-$rss_url = array_key_exists('rss_url', $_REQUEST) ? pg_escape_string ($_REQUEST['rss_url']) : '';
+$sid = array_key_exists('sid', $_REQUEST) ? mysql_escape_string ($_REQUEST['sid']) : '';
+$email = array_key_exists('email', $_REQUEST) ? mysql_escape_string ($_REQUEST['email']) : '';
+$rss_url = array_key_exists('rss_url', $_REQUEST) ? mysql_escape_string ($_REQUEST['rss_url']) : '';
 $sub = array();
 $my_subs = array ();
 
@@ -30,10 +30,10 @@ $data['rss_url'] = make_url('/rss');
 
 if ($sid)
 {
-    $sql = "SELECT * FROM \"RSSEmailSubscription\" WHERE id = '$sid'";
-    $result = pg_query ($geodb, $sql);      
-    if (!$result) die(pg_last_error());
-    $sub = pg_fetch_assoc($result);
+    $sql = "SELECT * FROM RSSEmailSubscription WHERE id = '$sid'";
+    $result = mysql_query ($sql, $db);      
+    if (!$result) die(mysql_error());
+    $sub = mysql_fetch_assoc($result);
     if ($sub)
         $sub['image_url'] = createStaticMapUrl ($sub['rss_url'], 200);
     else
@@ -127,10 +127,10 @@ switch ($action)
             break;
         }    
     	// Check to see if a subscription already exists
-        $sql = "SELECT * FROM \"RSSEmailSubscription\" WHERE email = '$email' AND rss_url = '$rss_url' AND active = 1";
-        $result = pg_query ($geodb, $sql);      
-        if (!$result) die(pg_last_error());
-        $row = pg_fetch_assoc($result);
+        $sql = "SELECT * FROM RSSEmailSubscription WHERE email = '$email' AND rss_url = '$rss_url' AND active = 1";
+        $result = mysql_query ($sql, $db);      
+        if (!$result) die(mysql_error());
+        $row = mysql_fetch_assoc($result);
         
         if (!$row)
         {
@@ -151,10 +151,10 @@ switch ($action)
             }
                     
             // need to add a new subscription
-            $sql = "INSERT INTO \"RSSEmailSubscription\" (" . join (',', array_keys($row)) . ") ";
+            $sql = "INSERT INTO RSSEmailSubscription (" . join (',', array_keys($row)) . ") ";
             $sql .= " VALUES ('" . join ("','", array_values($row)) . "')";
-            $result = pg_query ($geodb, $sql);      
-            if (!$result) die(pg_last_error());
+            $result = mysql_query ($sql, $db);      
+            if (!$result) die(mysql_error());
         }  
         $sub = $row;        
         $sub['image_url'] = createStaticMapUrl ($row['rss_url'], 200);
@@ -167,9 +167,9 @@ switch ($action)
             $output_template = 'error'; 
             break;
         }
-        $sql = "UPDATE \"RSSEmailSubscription\" SET confirmed=1 WHERE id = '$sid'";
-        $result = pg_query ($geodb, $sql);      
-        if (!$result) die(pg_last_error());
+        $sql = "UPDATE RSSEmailSubscription SET confirmed=1 WHERE id = '$sid'";
+        $result = mysql_query ($sql, $db);      
+        if (!$result) die(mysql_error());
         $output_template = 'update';
         break;
     case 'confirm-unsubscribe':
@@ -180,9 +180,9 @@ switch ($action)
             break;
         }
         
-        $sql = "UPDATE \"RSSEmailSubscription\" SET active =0 WHERE id = '$sid'";
-        $result = pg_query ($geodb, $sql);      
-        if (!$result) die(pg_last_error());
+        $sql = "UPDATE RSSEmailSubscription SET active =0 WHERE id = '$sid'";
+        $result = mysql_query ($sql, $db);      
+        if (!$result) die(mysql_error());
         $output_template = 'update';
     
         break;
@@ -216,10 +216,10 @@ switch ($action)
 // Load other subscriptions with the same email address
 if ($sub)
 {
-    $sql = "SELECT * FROM \"RSSEmailSubscription\" WHERE email = '{$sub['email']}'";
-    $result = pg_query ($geodb, $sql);      
-    if (!$result) die(pg_last_error());
-    while ($row = pg_fetch_assoc($result))
+    $sql = "SELECT * FROM RSSEmailSubscription WHERE email = '{$sub['email']}'";
+    $result = mysql_query ($sql, $db);      
+    if (!$result) die(mysql_error());
+    while ($row = mysql_fetch_assoc($result))
     {
         $row['image_url'] = createStaticMapUrl ($row['rss_url'], 100);
         $row['status'] = $row['confirmed'] ? ($row ['active'] ? 'Active' : 'Inactive') : 'Pending Confirmation';
@@ -237,6 +237,121 @@ if ($sub)
     }    
 }
 
+/*
+if (array_key_exists('sid', $_REQUEST))
+{
+	$sid = mysql_escape_string ($_REQUEST['sid']);
+	
+    $sql = "SELECT * FROM RSSEmailSubscription WHERE id = '$sid' AND active = 1";
+    $result = mysql_query ($sql, $db);      
+    if (!$result) die(mysql_error());
+    $row = mysql_fetch_assoc($result);
+    if ($row)
+    {
+        $data['subscription'] = $row;
+        $data['subscription']['status'] = 'active';
+    
+        $data['query'] = parse_feed_url ($row['rss_url']);
+        
+        $data['feed_params'] = getDisplayFeedParams($data['query']);
+
+        if (array_key_exists ('unsubscribe', $_REQUEST))
+        {
+            $sql = "UPDATE RSSEmailSubscription SET active =0 WHERE id = '$sid'";
+            $result = mysql_query ($sql, $db);      
+            if (!$result) die(mysql_error());
+    
+            $data['subscription']['status'] = 'unsubscribed';
+        }
+        else if ($row['confirmed'] == 0)
+        {
+            // mark the subscription as confirmed
+            $sql = "UPDATE RSSEmailSubscription SET confirmed=1 WHERE id = '$sid'";
+            $result = mysql_query ($sql, $db);      
+            if (!$result) die(mysql_error());
+            
+            $data['subscription']['confirmed'] = 1;
+            $data['subscription']['status'] = 'confirmed';
+        }
+        $data['subscription']['image_url'] = createStaticMapUrl ($data['subscription']['rss_url'], 200);
+        $output_template = 'view';
+    }
+    else
+    {
+        $data['error'] = 'ERROR: Unknown subscription id';
+        $output_template = 'default';
+    }
+}
+else if (array_key_exists('email', $_REQUEST) && array_key_exists('rss_url', $_REQUEST)) 
+{
+	$email = mysql_escape_string ($_REQUEST['email']);
+	$rss_url = mysql_escape_string (urldecode($_REQUEST['rss_url']));
+	
+	// Check to see if a subscription already exists
+    $sql = "SELECT * FROM RSSEmailSubscription WHERE email = '$email' AND rss_url = '$rss_url' AND active = 1";
+    $result = mysql_query ($sql, $db);      
+    if (!$result) die(mysql_error());
+    $row = mysql_fetch_assoc($result);
+    
+    if (!$row)
+    {
+        $row = array();
+        $row['email'] = $email;
+        $row['rss_url'] = $rss_url;
+        $row['id'] = uuid ();
+        $row['confirmed'] = 0;
+        $row['active'] = 1;
+        
+        $parsed = parse_feed_url ($rss_url);
+        if ($parsed['bounds'])
+        {
+            $row['lat1'] = $parsed['bounds'][0][0];
+            $row['lng1'] = $parsed['bounds'][0][1];
+            $row['lat2'] = $parsed['bounds'][1][0];
+            $row['lng2'] = $parsed['bounds'][1][1];
+        }
+                
+        // need to add a new subscription
+        $sql = "INSERT INTO RSSEmailSubscription (" . join (',', array_keys($row)) . ") ";
+        $sql .= " VALUES ('" . join ("','", array_values($row)) . "')";
+        $result = mysql_query ($sql, $db);      
+        if (!$result) die(mysql_error());
+    }
+
+    $data['query'] = parse_feed_url ($row['rss_url']);
+    $data['feed_params'] = getDisplayFeedParams($data['query']);
+
+    $data['subscription'] = $row;
+    $data['subscription']['status'] = $row['confirmed'] ? 'active' : 'created';
+    $data['subscription']['image_url'] = createStaticMapUrl ($row['rss_url'], 200);
+    $output_template = 'create';
+}
+else if (array_key_exists('l', $_REQUEST)) 
+{
+//	$l = $_REQUEST['l'];
+//	$parsed = parseBounds ($l);
+
+    $parsed_params = parse_feed_params($_REQUEST);
+
+    $sub_params = $parsed_params;
+    	
+    if ($sub_params['channel'] == $sub_params['output_template'])	
+    	$sub_params['channel'] = 'stae';
+    $sub_params['output_template'] = 'rss'; 
+    
+    $data['feed_params'] = getDisplayFeedParams($parsed_params);
+    
+	$data['subscription']['rss_url'] = build_feed_url($sub_params);
+//	$data['kml_sample_url'] = make_url('/kml', array('l'=>$parsed['bounds_url'], 'n'=>3, 'channel'=>'local'));
+
+	$data['query'] = parse_feed_url (urldecode($data['subscription']['rss_url']));
+	
+    $output_template = 'create';
+    $data['subscription']['status'] = 'new';
+    $data['subscription']['image_url'] = createStaticMapUrl ($data['subscription']['rss_url'], 200);
+	
+}
+*/
 
 $data['action'] = $action;
 $data['subscription'] = $sub;

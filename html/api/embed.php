@@ -65,17 +65,9 @@ unset ($feed_params['width']);
 unset ($feed_params['height']);
 unset ($feed_params['notify']);
 
-$map_options['subscribe_url'] = $CONFIG['SUBSCRIBE_URL'];
-$map_options['feed_base_url'] = $CONFIG['FEED_BASE_URL'];
-$map_options['region_kml_base_url'] = $CONFIG['REGION_KML_BASE_URL'];
-$data['map_options'] = $map_options;
-
 $data['feed_params'] = $feed_params;
-//$data['feed_url'] = 'http://alerts.skytruth.org/ge/alerts.kml?' . http_build_query($feed_params, '', '&');
-$data['rss_url'] = $CONFIG['FEED_BASE_URL'] .'rss?' . http_build_query($feed_params, '', '&');
-
-$data['map_cookie_name'] = $CONFIG['MAP_COOKIE_NAME'];
-
+$data['feed_url'] = 'http://alerts.skytruth.org/ge/alerts.kml?' . http_build_query($feed_params, '', '&');
+$data['rss_url'] = 'http://alerts.skytruth.org/rss?' . http_build_query($feed_params, '', '&');
 
 require ("templates/embed.$output_template.template");
 

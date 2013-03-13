@@ -9,15 +9,15 @@
         echo "<meta property=\"$property\" content=\"$content\" />";
 ?>        
 <title><?php echo $data['title']?></title>
-<link href="./css/style.css" rel="stylesheet" type="text/css">
+<link href="/css/style.css" rel="stylesheet" type="text/css">
 <link rel="shortcut icon" href="/favicon.ico"  type="image/x-icon" />
-  <script type="text/javascript" src="./js/jquery-1.6.4.min.js"></script>
+  <script type="text/javascript" src="/js/jquery-1.6.4.min.js"></script>
 
 <?php if ($data['use_maps']) { ?>
 
 <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false" type="text/javascript"></script>
-    <script type="text/javascript" src="./js/map.js"></script>
-    <script type="text/javascript" src="./css/style.js"></script>
+    <script type="text/javascript" src="/js/map.js"></script>
+    <script type="text/javascript" src="/css/style.js"></script>
 <?php } ?>
 
 <script type="text/javascript" src="https://apis.google.com/js/plusone.js"></script>
@@ -36,14 +36,18 @@
 
 <script type="text/javascript">
   var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', '<?php echo $CONFIG['GA_ACCOUNT'] ?>']);
-  _gaq.push(['_setDomainName', '<?php echo $CONFIG['GA_DOMAIN'] ?>']);
+  _gaq.push(['_setAccount', 'UA-25593503-1']);
+  _gaq.push(['_setDomainName', '.skytruth.org']);
 <?php 
     if (array_key_exists('ga_actions', $data))
         foreach ($data['ga_actions'] as $key=>$value)
             if (is_array($value))
                 $value = implode ("','", $value);
             echo "  _gaq.push(['$key', '$value']);\n";
+
+// http://blog.intlock.com/setting-google-analytics-campaign-tracking-using-javascript/
+// http://blog.intlock.com/_setcampvalues-for-google-analytics/
+
 ?>  
   _gaq.push(['_trackPageview']);
 
