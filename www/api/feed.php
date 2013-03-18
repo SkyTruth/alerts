@@ -40,7 +40,7 @@ if ($parsed_params['region'])
 }
 
     
-$sql = build_feed_query_sql ($parsed_params);
+$sql = build_feed_query_sql ($parsed_params, $AUTH['FILTER_SQL']);
 
 if ($parsed_params['debug'])
     $data['debug'] = $sql;

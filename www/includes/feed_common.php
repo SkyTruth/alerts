@@ -218,7 +218,7 @@ function parse_feed_url ($url)
     return parse_feed_params($request);
 }
 
-function build_feed_query_sql($params)
+function build_feed_query_sql($params, $auth_filter_sql = '')
 {
     switch ($params['output_template'])
     {
@@ -292,6 +292,9 @@ function build_feed_query_sql($params)
     		$where_sql .= " AND $date_sort_field <= TIMESTAMP '{$params['dates'][1]}' + INTERVAL '1 day'";
     }
 
+    if ($auth_filter_sql)
+        $where_sql .= " AND (" . $auth_filter_sql . ")";
+        
     $order_sql = "fe.$date_sort_field {$params['sort']}";
     
     $sql = "select fe.*, fs.name as source_name, to_char(fe.published, 'YYYY-MM-DD\"T\"HH24:MI:SS.MS+00:00') published_formatted,published as published_sequential" .
