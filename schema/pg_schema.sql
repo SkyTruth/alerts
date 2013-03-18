@@ -154,7 +154,7 @@ $BODY$
         loc      geometry;
         reg      integer[];
     BEGIN
-	loc := setsrid(makepoint(NEW.lng, NEW.lat), (4326));
+	loc := st_setsrid(st_makepoint(NEW.lng, NEW.lat), (4326));
 	reg := ARRAY( SELECT region.id FROM region 
 		WHERE st_contains(region.the_geom, loc));
 	pub := (( SELECT to_timestamp(GREATEST(floor(date_part('epoch'::text, now())), date_part('epoch'::text, max(feedentry.published))) + 0.001::double precision) AS to_timestamp
