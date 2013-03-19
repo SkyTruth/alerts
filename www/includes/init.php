@@ -16,5 +16,10 @@ require_once 'config.php';
 
 $geodb = pg_connect("host={$CONFIG['GEODBHOST']} dbname={$CONFIG['GEODBNAME']} user={$CONFIG['GEODBUSER']} password={$CONFIG['GEODBPASS']}");
 
+// authenticate
+
+if ($CONFIG['AUTH_METHOD'])
+    require_once ($CONFIG['AUTH_METHOD']);
+
 
 ?>
