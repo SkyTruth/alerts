@@ -20,5 +20,14 @@ $CONFIG['MAP_COOKIE_NAME'] = 'alerts_map';
 $CONFIG['GA_ACCOUNT'] = 'UA-25593503-1';
 $CONFIG['GA_DOMAIN'] = '.skytruth.org';
 
+$CONFIG['AUTH_METHOD'] = '';    // php file to be loaded to perform user authentication
+$CONFIG['WORDPRESS_PATH'] = '';    // Full path to local wordpress install
+$CONFIG['WP_AUTH_FILTER'] = array (
+    'anonymous' => array ('tags' => array('anonymous')),
+    'current_user_can' => array (
+        'access_s2member_level1' => array('tags' => array('level1'))
+    )
+);
+$AUTH['filter_sql'] = '';   // sql filter to be applied to feed output based on user authentication
 
 ?>
