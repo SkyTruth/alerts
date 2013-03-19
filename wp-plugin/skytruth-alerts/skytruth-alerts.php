@@ -88,6 +88,9 @@ class skytruth_alerts_plugin
         
         skytruth_alerts_log_event (var_export($feed_entry, true));
         
+        self::store_feed_entry ($feed_entry);
+        
+        
 //        $post = get_post($post_id);
 //        $cats = get_the_category ($post_id);
 //        $cat_slugs = array ();
@@ -131,12 +134,43 @@ class skytruth_alerts_plugin
             $feed_entry['lat'] = 39.464285 + (rand(-5,5) / 100.0);
             $feed_entry['lng'] = -77.797353 + (rand(-1,1) / 10.0);
             $feed_entry['incident_datetime'] = $post->post_date;   
+            $feed_entry['tags'] = array ();
+            foreach ($tags as $tag)
+                $feed_entry['tags'][] = $tag->slug;
             
             return $feed_entry;     
         }
     }
-    
-    
+
+    public static function store_feed_entry ($feed_entry)
+    {
+        $fields = array();
+        $values = array ();
+        $placeholders = array();
+        $count = 1;
+        
+        foreach ($feed_entry as $name => $value)
+        {
+            if ($value)
+            {
+                $fields[] = $name;
+                if ($name == 'tags')
+                    $values[] = "{'" . implode ("','", $value) . "'}";
+                else
+                    $values[] = $value;
+                $placeholders [] = "$".$count;
+                $count += 1;    
+            }            
+        }   
+        
+        $sql = "INSERT INTO feedentry (". implode(",", $fields) .") VALUES (". implode(",",$placeholders) .")";
+        
+        skytruth_alerts_log_event ($sql);
+        
+        $result = pg_query_params (self::$geodb, $sql, $values);
+        
+        skytruth_alerts_log_event (pg_result_error($result));
+    }
 }
 
 
