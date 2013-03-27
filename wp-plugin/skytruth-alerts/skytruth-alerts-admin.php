@@ -70,13 +70,17 @@ class skytruth_alerts_options_page {
             !empty($opts["geodb_host"]) && 
             !empty($opts["geodb_database"]) && 
             !empty($opts["geodb_user"])) {
-            
-            $geodb = pg_connect("host={$opts['geodb_host']} dbname={$opts['geodb_database']} user={$opts['geodb_user']} password={$opts['geodb_password']}");
+
+            $connect_str = "host={$opts['geodb_host']} dbname={$opts['geodb_database']} user={$opts['geodb_user']} password={$opts['geodb_password']}";
+            $geodb = pg_connect($connect_str);
             
             if ($geodb) 
                 $this->messages[] = __('GeoDatabase connection successful','SKYTRUTH_ALERTS');
             else
+	    {
                 $this->messages[] = __('ERROR: Unable to connect to GeoDB','SKYTRUTH_ALERTS');
+//                $this->messages[] = __($connect_str,'SKYTRUTH_ALERTS');
+	    }
         }
             
 	}
@@ -130,7 +134,8 @@ class skytruth_alerts_options_page {
 		</th>
 		<td>
 			<label>
-				<input type="password" name="skytruth_alerts_geodb_pasword" value="<?php echo $this->options["geodb_pasword"]; ?>" size="43" style="width:272px;height:24px;" />
+				<input type="password" 
+name="skytruth_alerts_geodb_password" value="<?php echo $this->options["geodb_pasword"]; ?>" size="43" style="width:272px;height:24px;" />
 			</label>
 		</td>
 	</tr>
