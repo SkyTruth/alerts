@@ -44,6 +44,8 @@ $sql = build_feed_query_sql ($parsed_params, $AUTH['FILTER_SQL']);
 
 if ($parsed_params['debug'])
     $data['debug'] = $sql;
+
+// echo $sql;
     
 $result = pg_query ($geodb, $sql);
 if (!$result) die(pg_last_error());

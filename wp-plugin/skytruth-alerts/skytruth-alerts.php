@@ -58,6 +58,7 @@ class skytruth_alerts_plugin
     public static function init ()
     {
         self::$options =  get_option(SKYTRUTH_ALERTS_OPTIONS);
+	self::$options['sync_cat_ids'] = explode (',',self::$options['sync_cat_ids']);
         self::init_db();
     }
     
@@ -90,23 +91,6 @@ class skytruth_alerts_plugin
         
         self::store_feed_entry ($feed_entry);
         
-        
-//        $post = get_post($post_id);
-//        $cats = get_the_category ($post_id);
-//        $cat_slugs = array ();
-//        foreach ($cats as $cat)
-//            $cat_slugs[] = $cat->slug;
-//        skytruth_alerts_log_event ('publish_post cats: ' . implode(' ', $cat_slugs));
-//    
-//        $tags = get_the_tags ($post_id);
-//        $tag_slugs = array ();
-//        foreach ($tags as $tag)
-//            $tag_slugs[] = $tag->slug;
-//        skytruth_alerts_log_event ('publish_post tags: ' . implode(' ', $tag_slugs));
-//        
-//        $url = 'http://alerts.skytruth.org/source/91/' . $post_id;
-//        $uuid = skytruth_alerts_UUID::v3(SKYTRUTH_ALERTS_NAMESPACE_URL, $url);
-//        skytruth_alerts_log_event ('publish_post uuid: ' . $uuid);
     }    
     
     public static function get_feed_entry ($post_id)
@@ -115,24 +99,33 @@ class skytruth_alerts_plugin
         $cats = get_the_category ($post_id);
         $tags = get_the_tags ($post_id);
         $link = get_permalink ($post_id);  
+        $meta = get_metadata ('post', $post_id);
         if (!$post) return;
         
-        // Must be a post
-        if ($post->post_type == 'post')
+//        skytruth_alerts_log_event (var_export(self::$options, true));
+	$cat_ids = array();
+	foreach ($cats as $cat)
+		$cat_ids[] = $cat->cat_ID;
+
+//        skytruth_alerts_log_event (var_export($cat_ids, true));
+
+        // Must be a post and in the right category
+        if ($post->post_type == 'post' and 
+		array_intersect($cat_ids, self::$options['sync_cat_ids']))
         {
             $feed_entry = array ();
             
             // TODO: put sourceid in wp_options
-            $feed_entry['source_id'] = 999;
+            $feed_entry['source_id'] = self::$options['source_id'];
             $feed_entry['source_item_id'] = $post_id;
             $url = 'http://alerts.skytruth.org/source/' .  $feed_entry['source_id'] . '/' . $feed_entry['source_item_id'];
             $feed_entry['id'] = skytruth_alerts_UUID::v3(SKYTRUTH_ALERTS_NAMESPACE_URL, $url);
             $feed_entry['title'] = $post->post_title;    
             $feed_entry['link'] = $link;
-            $feed_entry['summary'] = $post->post_excerpt;
+            $feed_entry['summary'] = $meta['event_desc'][0];
             $feed_entry['content'] = $post->post_content;
-            $feed_entry['lat'] = 39.464285 + (rand(-5,5) / 100.0);
-            $feed_entry['lng'] = -77.797353 + (rand(-1,1) / 10.0);
+            $feed_entry['lat'] = $meta['lat'][0];
+            $feed_entry['lng'] = $meta['lon'][0];
             $feed_entry['incident_datetime'] = $post->post_date;   
             $feed_entry['tags'] = array ();
             foreach ($tags as $tag)
@@ -155,7 +148,7 @@ class skytruth_alerts_plugin
             {
                 $fields[] = $name;
                 if ($name == 'tags')
-                    $values[] = "{'" . implode ("','", $value) . "'}";
+                    $values[] = "{" . implode (",", $value) . "}";
                 else
                     $values[] = $value;
                 $placeholders [] = "$".$count;
@@ -166,11 +159,40 @@ class skytruth_alerts_plugin
         $sql = "INSERT INTO feedentry (". implode(",", $fields) .") VALUES (". implode(",",$placeholders) .")";
         
         skytruth_alerts_log_event ($sql);
+        skytruth_alerts_log_event (implode(", ", $values));
         
         $result = pg_query_params (self::$geodb, $sql, $values);
         
         skytruth_alerts_log_event (pg_result_error($result));
     }
+
+    public static function test ()
+    {
+	return 'success';
+    }
+
+    // get a list of regions that can be used to create subscriptions
+    public static function get_regions ()
+    {
+	$sql = 'SELECT id, name, code from region';
+        return pg_query (self::$geodb, $sql);
+    }
+
+    // get a list of existing subscriptions for the current user
+    public static function get_user_subscriptions ()
+    {
+ 
+    }	
+
+    // cteate a new subscription for the current user
+    public static function create_user_subscription ($location)
+    {
+    }
+
+    // delete an existing subscription for the current user
+    public static function delete_user_subscription ($id)
+    {
+    }	
 }
 
 

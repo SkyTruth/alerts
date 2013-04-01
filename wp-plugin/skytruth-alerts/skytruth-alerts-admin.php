@@ -11,7 +11,7 @@ class skytruth_alerts_options_page {
         'geodb_database'=>'wpalerts',
         'geodb_user'=>'postgres',
         'geodb_password'=>'',
-        'sync_cat_id'=>'',
+        'sync_cat_ids'=>'',
         'source_id'=>'999'
         );
     public $messages = array();
@@ -45,6 +45,9 @@ class skytruth_alerts_options_page {
 		$this->options["geodb_database"] = trim($_POST['skytruth_alerts_geodb_database']);
 		$this->options["geodb_user"] = trim($_POST['skytruth_alerts_geodb_user']);
 		$this->options["geodb_password"] = trim($_POST['skytruth_alerts_geodb_password']);
+		$this->options["sync_cat_ids"] = trim($_POST['skytruth_alerts_sync_cat_ids']);
+		$this->options["source_id"] = trim($_POST['skytruth_alerts_source_id']);
+
 		if(empty($this->options["geodb_host"])){
             $messages[] = __('GeoDB Host','SKYTRUTH_ALERTS') . ' ' .  __('cannot be left blank.', 'SKYTRUTH_ALERTS');
 		}
@@ -150,7 +153,7 @@ name="skytruth_alerts_geodb_password" value="<?php echo $this->options["geodb_pa
 		</th>
 		<td>
 			<label>
-				<input type="text" name="skytruth_alerts_sync_cat_id" value="<?php echo $this->options["sync_cat_id"]; ?>" size="43" style="width:272px;height:24px;" />
+				<input type="text" name="skytruth_alerts_sync_cat_ids" value="<?php echo $this->options["sync_cat_ids"]; ?>" size="43" style="width:272px;height:24px;" />
 			</label>
 		</td>
 	</tr>
