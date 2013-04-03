@@ -204,3 +204,25 @@ CREATE TRIGGER feedentry_insert
   EXECUTE PROCEDURE feedentry_insert();
 
 
+
+CREATE TABLE public."RSSEmailSubscription"
+(
+  id character(36) NOT NULL,
+  confirmed smallint NOT NULL DEFAULT 0,
+  email character varying(255) NOT NULL,
+  rss_url character varying(255) NOT NULL,
+  interval_hours integer NOT NULL DEFAULT 23,
+  last_email_sent timestamp without time zone,
+  last_item_updated timestamp without time zone,
+  lat1 double precision,
+  lat2 double precision,
+  lng1 double precision,
+  lng2 double precision,
+  last_update_sent timestamp without time zone,
+  active smallint NOT NULL DEFAULT 1,
+  name character varying(30),
+  CONSTRAINT "RSSEmailSubscription_pkey" PRIMARY KEY (id)
+)
+WITH (
+  OIDS=FALSE
+);

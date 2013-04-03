@@ -58,7 +58,7 @@ class skytruth_alerts_plugin
     public static function init ()
     {
         self::$options =  get_option(SKYTRUTH_ALERTS_OPTIONS);
-	self::$options['sync_cat_ids'] = explode (',',self::$options['sync_cat_ids']);
+	    self::$options['sync_cat_ids'] = explode (',',self::$options['sync_cat_ids']);
         self::init_db();
     }
     
@@ -67,11 +67,13 @@ class skytruth_alerts_plugin
         if (!function_exists('pg_connect')) return;
         
         $options = self::$options;
-        self::$geodb =  pg_connect(
-            "host={$options['geodb_host']} " . 
+        $connect_str = 
+           "host={$options['geodb_host']} " . 
             "dbname={$options['geodb_database']} " .
             "user={$options['geodb_user']} " .
-            "password={$options['geodb_password']}");        
+            "password={$options['geodb_password']}";
+                    
+        self::$geodb =  pg_connect($connect_str);
         
     }
 
@@ -174,95 +176,94 @@ class skytruth_alerts_plugin
     // get a list of regions that can be used to create subscriptions
     public static function get_regions ()
     {
-	$sql = 'SELECT id, name, code from region';
-        return pg_query (self::$geodb, $sql);
+        $sql = 'SELECT id, name, code from region';
+        $result = pg_query (self::$geodb, $sql);
+        if ($result)
+            return pg_fetch_all($result);
+        else
+            skytruth_alerts_log_event (pg_result_error($result));
     }
 
     // get a list of existing subscriptions for the current user
     public static function get_user_subscriptions ()
     {
- 
+        global $user_email;
+        
+        if (is_user_logged_in())
+        {
+            $sql = 'SELECT * from "RSSEmailSubscription" where email=$1';
+            $result = pg_query_params (self::$geodb, $sql, array($user_email));
+            if ($result)
+                return pg_fetch_all($result);
+            else
+                skytruth_alerts_log_event (pg_result_error($result));
+        }
+        else
+            return array ();
     }	
 
+
     // cteate a new subscription for the current user
-    public static function create_user_subscription ($location)
+    public static function create_user_subscription ($region_code)
     {
+        global $user_email;
+        
+        if (is_user_logged_in())
+        {
+            
+            // TODO construct rss url
+            $rss_url = "http://localhost/alerts/rss?region=$region_code";
+            
+        	// Check to see if a subscription already exists
+            $sql = 'SELECT * FROM "RSSEmailSubscription" WHERE email = $1 AND rss_url = $2 AND active = 1';
+            $result = pg_query_params (self::$geodb, $sql, array($user_email, $rss_url));
+            if (!$result) skytruth_alerts_log_event (pg_result_error($result));
+            if (pg_num_rows($result))
+                return pg_fetch_assoc($result);
+            
+            
+            $row = array ();
+            $row['email'] = $user_email;
+            $row['rss_url'] = $rss_url;
+            $row['id'] = skytruth_alerts_UUID::v3(SKYTRUTH_ALERTS_NAMESPACE_URL, "$rss_url&email=$user_email");
+            $row['confirmed'] = 0;
+            $row['active'] = 1;
+            
+            $param = 1;
+            
+            $keys_sql = array();
+            $values_sql = array();
+            foreach ($row as $name=>$value)
+            {
+                $keys_sql[] = $name;
+                $values_sql[] = '$'.$param;    
+                $param += 1;
+            }
+
+            $sql = 'INSERT INTO "RSSEmailSubscription" (' . join(',', $keys_sql) . ') VALUES (' .  join(',', $values_sql) . ')';
+            $result = pg_query_params (self::$geodb, $sql, $row);
+            if (!$result) skytruth_alerts_log_event (pg_result_error($result));
+            
+            $sql = 'SELECT * from "RSSEmailSubscription" where id=$1';
+            $result = pg_query_params (self::$geodb, $sql, array($row['id']));
+            if ($result)
+                return pg_fetch_assoc($result);
+            else
+                skytruth_alerts_log_event (pg_result_error($result));
+        }
+        else
+            return false;
     }
 
     // delete an existing subscription for the current user
     public static function delete_user_subscription ($id)
     {
+        $sql = 'DELETE FROM "RSSEmailSubscription" WHERE id = $1';
+        $result = pg_query_params (self::$geodb, $sql, array($id));
+        if (!$result) skytruth_alerts_log_event (pg_result_error($result));
+        return pg_affected_rows($result);
     }	
 }
-
-
-
-//$skytruth_alerts_config = array();
-//
-//
-//
-//
-//function skytruth_alerts_init() {
-//    global $skytruth_alerts_config;
-//        
-//	$staOptions = get_option("skytruth_alerts_options");
-//    if (function_exists('pg_connect') && !empty($staOptions["geodb_host"]) && !empty($staOptions["geodb_database"]) && !empty($staOptions["geodb_user"])) {
-//        
-//        $skytruth_alerts_config['geodb'] = pg_connect("host={$staOptions['geodb_host']} dbname={$staOptions['geodb_database']} user={$staOptions['geodb_user']} password={$staOptions['geodb_password']}");
-//    }
-//    skytruth_alerts_log_event ('init');
-//   
-//}
-
-//function skytruth_alerts_save_post ($post_id){
-//    skytruth_alerts_log_event ('save_post ' . $post_id);
-//}
-//
-//function skytruth_alerts_edit_post ($post){
-//    skytruth_alerts_log_event ('edit_post ' . $post);
-//}
-//
-//function skytruth_alerts_delete_post ($post_id){
-//    skytruth_alerts_log_event ('delete_post ' . $post_id);
-//}
-
-//function skytruth_alerts_publish_post ($post_id){
-//    $post = get_post($post_id);
-//    $cats = get_the_category ($post_id);
-//    $cat_slugs = array ();
-//    foreach ($cats as $cat)
-//        $cat_slugs[] = $cat->slug;
-//    skytruth_alerts_log_event ('publish_post cats: ' . implode(' ', $cat_slugs));
-//
-//    $tags = get_the_tags ($post_id);
-//    $tag_slugs = array ();
-//    foreach ($tags as $tag)
-//        $tag_slugs[] = $tag->slug;
-//    skytruth_alerts_log_event ('publish_post tags: ' . implode(' ', $tag_slugs));
-//    
-//    $url = 'http://alerts.skytruth.org/source/91/' . $post_id;
-//    $uuid = skytruth_alerts_UUID::v3(SKYTRUTH_ALERTS_NAMESPACE_URL, $url);
-//    skytruth_alerts_log_event ('publish_post uuid: ' . $uuid);
-//}
-
-//function get_feed_entry ($post_id) {
-//    $post = get_post($post_id);
-//    $cats = get_the_category ($post_id);
-//    $tags = get_the_tags ($post_id);
-//
-//    if (!$post) return;
-    
-//    feed_entry = array ();
-//    
-//    feed_entry['title'] = $post->title;    
-//    $source_id = 
-//    $url = 'http://alerts.skytruth.org/source/91/' . $post_id;
-//    feed_entry['id'] = skytruth_alerts_UUID::v3(SKYTRUTH_ALERTS_NAMESPACE_URL, 'http://alerts.skytruth.org/source/' . $source_id. '/' . $post_id;);
-//}
-
-//function publish_feed_entry ($post_id) {
-//    
-//}
 
 
 add_action('init', array('skytruth_alerts_plugin', 'init'));
