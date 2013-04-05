@@ -212,7 +212,7 @@ class skytruth_alerts_plugin
         {
             
             // TODO construct rss url
-            $rss_url = "http://localhost/alerts/rss?region=$region_code";
+            $rss_url = "http://appalachianwaterwatch.org/alerts/rss?region=$region_code";
             
         	// Check to see if a subscription already exists
             $sql = 'SELECT * FROM "RSSEmailSubscription" WHERE email = $1 AND rss_url = $2 AND active = 1';
@@ -220,8 +220,7 @@ class skytruth_alerts_plugin
             if (!$result) skytruth_alerts_log_event (pg_result_error($result));
             if (pg_num_rows($result))
                 return pg_fetch_assoc($result);
-            
-            
+                        
             $row = array ();
             $row['email'] = $user_email;
             $row['rss_url'] = $rss_url;
@@ -245,6 +244,7 @@ class skytruth_alerts_plugin
             if (!$result) skytruth_alerts_log_event (pg_result_error($result));
             
             $sql = 'SELECT * from "RSSEmailSubscription" where id=$1';
+
             $result = pg_query_params (self::$geodb, $sql, array($row['id']));
             if ($result)
                 return pg_fetch_assoc($result);

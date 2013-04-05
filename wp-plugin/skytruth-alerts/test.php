@@ -3,7 +3,7 @@
 
 //Load wordpress
 define('WP_USE_THEMES', false);
-require("/Users/paulwoods/Sites/wpalerts/wp-load.php");
+require("/home/sites/appalachianwaterwatch.org/wordpress/wp-load.php");
 
 echo "<h1>SkyTruth Alerts Wordpress Plugin Test Page</h1>";
 
