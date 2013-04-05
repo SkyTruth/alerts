@@ -3,7 +3,8 @@
 
 //Load wordpress
 define('WP_USE_THEMES', false);
-require("/home/sites/appalachianwaterwatch.org/wordpress/wp-load.php");
+//require("/home/sites/appalachianwaterwatch.org/wordpress/wp-load.php");
+require("/Users/paulwoods/Sites/wpalerts/wp-load.php");
 
 echo "<h1>SkyTruth Alerts Wordpress Plugin Test Page</h1>";
 
@@ -28,6 +29,15 @@ echo var_export(skytruth_alerts_plugin::delete_user_subscription ($s['id']), tru
 echo "<h2>get_user_subscriptions</h2>";
 
 echo var_export(skytruth_alerts_plugin::get_user_subscriptions (), true);
+
+
+echo "<h2>get_regions(point)</h2>";
+
+echo var_export(skytruth_alerts_plugin::get_regions (array (37.38,-81.6)), true);
+
+echo "<h2>get_regions(bbox)</h2>";
+
+echo var_export(skytruth_alerts_plugin::get_regions (array (37.38,-81.6,37.8,-81.1)), true);
 
 echo "<h2>get_regions</h2>";
 
