@@ -16,9 +16,9 @@ if ( is_user_logged_in() ) {
 
 echo "<br/>";
 
-echo "<h2>create_user_subscription</h2>";
+echo "<h2>create_user_subscription with frequency</h2>";
 
-$s = skytruth_alerts_plugin::create_user_subscription ('TEST3');
+$s = skytruth_alerts_plugin::create_user_subscription ('TEST4', 8);
 echo var_export($s, true);
 
 echo "<h2>delete_user_subscription</h2>";

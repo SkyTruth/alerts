@@ -224,15 +224,16 @@ class skytruth_alerts_plugin
     }	
 
 
-    // cteate a new subscription for the current user
-    public static function create_user_subscription ($region_code)
+    // create a new subscription for the current user
+    // interval_hours is the minimum number of hours between emails
+    public static function create_user_subscription ($region_code, $interval_hours=0)
     {
         global $user_email;
         
         if (is_user_logged_in())
         {
             
-            // TODO construct rss url
+            // construct rss url
             $rss_url = "http://appalachianwaterwatch.org/alerts/rss?region=$region_code";
             
         	// Check to see if a subscription already exists
@@ -248,6 +249,8 @@ class skytruth_alerts_plugin
             $row['id'] = skytruth_alerts_UUID::v3(SKYTRUTH_ALERTS_NAMESPACE_URL, "$rss_url&email=$user_email");
             $row['confirmed'] = 0;
             $row['active'] = 1;
+            if ($interval_hours)
+                $row['interval_hours'] = $interval_hours;
             
             $param = 1;
             
