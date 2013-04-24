@@ -22,20 +22,18 @@ if (!$result) die(pg_last_error());
 $row = pg_fetch_assoc($result);
 $data['feed_updated'] = $row['published'];
 
-if ($parsed_params['region'])
+if ($parsed_params['regions'])
 {
-    $r_id = intval($parsed_params['region']);
-    if (!$r_id)
+    if (!intval($parsed_params['regions'][0]))
     {
-        // look up region code
-        $sql = "select id from region where code = '{$parsed_params['region']}'";
+        // look up region codes
+        $sql = "select id from region where code in ('" . join("','", $parsed_params['regions']) . "')";
         $result = pg_query ($geodb, $sql);
         if (!$result) die(pg_last_error());
-        $row = pg_fetch_assoc($result);
-        if ($row)
-            $parsed_params['region'] = $row['id'];
-        else    
-            $parsed_params['region'] = '';
+        $parsed_params['regions'] = array ();
+        
+        while ($row = pg_fetch_assoc($result))
+            $parsed_params['regions'][] = $row['id'];
     }
 }
 

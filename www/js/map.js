@@ -198,8 +198,12 @@ function initMap (_cookiename) {
     
     if (mapOptions.feedParams.region)
     {
-        var kmlLayer = new google.maps.KmlLayer(mapOptions.region_kml_base_url + mapOptions.feedParams.region + '.kml');
-        kmlLayer.setMap(map);    
+        var regions = mapOptions.feedParams.region.split (",");
+        for (var i = 0; i < regions.length; i++)
+        {
+            var kmlLayer = new google.maps.KmlLayer(mapOptions.region_kml_base_url + regions[i] + '.kml');
+            kmlLayer.setMap(map);    
+        }
     }
 }
 
