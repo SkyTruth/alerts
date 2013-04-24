@@ -58,7 +58,11 @@ $data['tags'] = array();
 
 while ($row = pg_fetch_assoc($result))
 {    
-    $row['report_url'] = make_url_with_entities ("/report/${row['id']}");
+    if ($CONFIG['FULL_REPORT_URL_FORMAT'] == 'ORIGINAL_SOURCE')
+        $row['report_url'] = $row['link'];
+    else
+        $row['report_url'] = make_url_with_entities ("/report/${row['id']}");
+
     if ($parsed_params['channel'] && $parsed_params['channel'] != 'local')
         $row['report_url'] .= "#c={$parsed_params['channel']}";
   

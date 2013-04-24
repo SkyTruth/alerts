@@ -14,6 +14,7 @@ $CONFIG['BASE_URL'] = 'http://alerts.skytruth.org/';
 $CONFIG['FEED_BASE_URL'] = $CONFIG['BASE_URL'];
 $CONFIG['SUBSCRIBE_URL'] = $CONFIG['BASE_URL'] . 'subscribe';
 $CONFIG['REGION_KML_BASE_URL'] = $CONFIG['BASE_URL'] . 'region/';
+$CONFIG['FULL_REPORT_URL_FORMAT'] = 'DEFAULT';
 
 $CONFIG['MAP_COOKIE_NAME'] = 'alerts_map';
 
