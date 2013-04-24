@@ -176,22 +176,28 @@ class skytruth_alerts_plugin
     // get a list of regions that can be used to create subscriptions
     // Supply a point to get only the region(s) that contain that point
     // suppply a bounding box to get all regions that intersect
+    // Supply a region id to get all regions that intesect 
     //
     // e.g. get_regions()   will get you all regions
     // get_regions (array(39.2,-85.4))  will get you regions that contian the point lat=39.2, lng=-85.4
     // get_regions(array(39.2,-85.4,39.5,-84.6)) will get you all regions that intersect
     //      the box defined by the two give points - lat1,lng1,lat2,lng2
 
-    public static function get_regions ($location=array())
+    public static function get_regions ($location='')
     {
-        $sql = 'SELECT id, name, code from region';
-        if (count($location) == 2)
-            $sql .= " where st_contains(the_geom, st_setsrid(st_point({$location[1]}, {$location[0]}), 4326))";
-        else if (count($location) == 4)
-            $sql .= " where st_intersects(the_geom, st_setsrid(st_envelope('LINESTRING("
-                . "{$location[1]} {$location[0]}, {$location[3]} {$location[2]}"
-                . ")'::geometry), 4326))";
-        
+        $sql = 'SELECT r1.id, r1.name, r1.code from region r1';
+        if (is_array($location)){
+            if (count($location) == 2)
+                $sql .= " where st_contains(the_geom, st_setsrid(st_point({$location[1]}, {$location[0]}), 4326))";
+            else if (count($location) == 4)
+                $sql .= " where st_intersects(the_geom, st_setsrid(st_envelope('LINESTRING("
+                    . "{$location[1]} {$location[0]}, {$location[3]} {$location[2]}"
+                    . ")'::geometry), 4326))";
+        }
+        else if ($location)
+            $sql .= " join region r2 on " . 
+                " st_intersects(r1.the_geom, r2.the_geom) and r2.code='$location' and r1.code <> r2.code";
+            
         $result = pg_query (self::$geodb, $sql);
         if ($result)
             return pg_fetch_all($result);

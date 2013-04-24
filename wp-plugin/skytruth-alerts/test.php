@@ -43,5 +43,9 @@ echo "<h2>get_regions</h2>";
 
 echo var_export(skytruth_alerts_plugin::get_regions (), true);
 
+echo "<h2>get_regions(region)</h2>";
+
+echo var_export(skytruth_alerts_plugin::get_regions ('WV'), true);
+
 
 ?>
