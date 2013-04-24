@@ -195,8 +195,12 @@ function initMap (_cookiename) {
     
     if (mapOptions.feedParams.region)
     {
-        var kmlLayer = new google.maps.KmlLayer('http://alerts.skytruth.org/region/' + mapOptions.feedParams.region + '.kml');
-        kmlLayer.setMap(map);    
+        var regions = mapOptions.feedParams.region.split (",");
+        for (var i = 0; i < regions.length; i++)
+        {
+            var kmlLayer = new google.maps.KmlLayer('http://alerts.skytruth.org/region/' + regions[i] + '.kml');
+            kmlLayer.setMap(map);    
+        }
     }
 }
 

@@ -18,7 +18,8 @@ function default_feed_params ()
     $params['sort'] = 'DESC';       // sort_direction
     $params['tags'] = array();      // list of tags
     $params['tag'] = array();       // alias for tags
-    $params['region'] = '';         // region id or code
+    $params['region'] = '';         // region id or code or comma separated list
+    $params['regions'] = array();        // array of region codes
     $params['region_name'] = '';    // region display name
     
     return $params;
@@ -113,6 +114,8 @@ function parse_feed_params($request)
     if (array_key_exists('region', $request)) 
     {
     	$params['region'] = mysql_escape_string ($request['region']);
+
+    	$params['regions'] = $tags = preg_split('/[,]/', $params['region']);
 
         $sql = "select name from region where code = '{$params['region']}'";
         
@@ -274,9 +277,9 @@ function build_feed_query_sql($params)
     	}
    }
 
-    if ($params['region'])
+    if ($params['regions'])
     {
-    	$where_sql .= " AND fe.regions @> array[{$params['region']}]";
+    	$where_sql .= " AND fe.regions && array[". join (",", $params['regions']) . "]";
     }
    
     if ($params['d'])
