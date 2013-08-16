@@ -12,29 +12,46 @@ require "header.template" ?>
 
 <script type="text/javascript"> 
 //<![CDATA[
-function subscribe (email) {
-    var rss_url = encodeURIComponent("<?php echo $data['rss_url']?>" + "?l=" + getCurrentMapBounds () + "&channel=stae");
-    window.location.href= "<?php echo $data['subscribe_create_url']?>?rss_url=" + rss_url + "&email=" + email;
-}  
+function subscribe (email, tags1) {
+    var rss_url;
+    if (tags1.checked) {
+        rss_url = encodeURIComponent(
+                "<?php echo $data['rss_url']?>" + "?l=" + getCurrentMapBounds () + "&tags=" + tags1.value + "&channel=stae");
+    } else {
+        rss_url = encodeURIComponent(
+                "<?php echo $data['rss_url']?>" + "?l=" + getCurrentMapBounds () + "&channel=stae");
+    }
+    window.location.href= 
+        "<?php echo $data['subscribe_create_url']?>?rss_url=" + rss_url + "&email=" + email;
+}
 //]]>
-</script>      
+</script>
 
-    	<form action="#" onsubmit="subscribe(this.email.value); return false;" >
-        	<table>
-        	   <tr><th>Email Address:</th><td><input type="text" size="30" name="email" value="" /></td><td><input type="submit" value="Subscribe" /></td></tr>
-            </table>
-	    </form> 
-	</div>
+    <form action="#" onsubmit="subscribe(this.email.value, this.tags1); return false;" >
+        <table>
+            <tr><th>Email Address:</th>
+                <td><input type="text" size="30" name="email" value="" /></td>
+                <td><input type="radio" id="tags1" name="tags" 
+                        value="release,oil spill,BigSpill,spill,Oil Spill,SheenSizeMismatch,blowout,violation" checked>
+                        Environmental Events
+                    <br>
+                    <input type="radio" id="tags2" name="tags" value="">All Alerts
+                    </td>
+                <td><input type="submit" value="Subscribe" /></td>
+            </tr>
+        </table>
+    </form> 
+
+    </div>
 
 
-	
 <table>
     <tr><td colspan="2">
         <div style="vertical-align: bottom; text-align: right; float: right;">
         <form action="#" onsubmit="zoomToLocation(this.location.value); return false">
             <b>Go To</b>: <input type="text" size="30" name="location" value="" />&nbsp;<input type="submit" value="Go!" />
         </form>
-        </div>	
+        </div>
     </td></tr>
     
     <tr> 
@@ -51,16 +68,22 @@ function subscribe (email) {
 <script type="text/javascript"> 
 //<![CDATA[
     mapOptions.feedParams.channel = 'local';
-<?php if (!empty ($data['map_bounds'])) { ?>
-    mapOptions.bounds = new google.maps.LatLngBounds (new google.maps.LatLng(<?php echo $data['map_bounds'][0][0] ?>, <?php echo $data['map_bounds'][0][1] ?> ), 
-        new google.maps.LatLng(<?php echo $data['map_bounds'][1][0] ?>, <?php echo $data['map_bounds'][1][1] ?>));
-<?php } ?>
+    <?php if (!empty ($data['map_bounds'])) { ?>
+        mapOptions.bounds = new google.maps.LatLngBounds (
+                new google.maps.LatLng(
+                        <?php echo $data['map_bounds'][0][0] ?>,
+                        <?php echo $data['map_bounds'][0][1] ?> ), 
+                new google.maps.LatLng(
+                        <?php echo $data['map_bounds'][1][0] ?>, 
+                        <?php echo $data['map_bounds'][1][1] ?>));
+    <?php } ?>
     initMap ('alerts_map');
 
 //    var kml = new GGeoXml("<?php echo make_url('/ge/recent.kml', array('nologo'=>1, 'channel'=>'local'))?>");
 //    map.addOverlay(kml);
 //]]>
-</script> 		  
+
+</script>
 <?php require "footer.template" ?>
 
 
