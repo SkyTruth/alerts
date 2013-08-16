@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Timelapse Select Test</title>
+    <!--<script src="jquery-1.10.1.min.js"></script>-->
+  </head>
+
+  <body>
+    <h1>Welcome to Timelapse</h1>
+    <p>This page demonstrates the dynamic location selector of the Timelapse frame.</p>
+    <input type="radio" name="site"
+      onclick="document.getElementById('time_machine_frame').contentWindow.show_timelapse('33.30', '-107.10', '9', 'true', 'false' );">
+      Elephant Butte Reservoir
+    </input><br>
+
+    <input type="radio" name="site"
+      onclick="document.getElementById('time_machine_frame').contentWindow.show_timelapse('36.30', '-114.50', '8', 'true', 'false' );">
+      Lake Mead
+    </input><br>
+
+    <iframe name="time_machine_frame" id="time_machine_frame"
+            src="http://alerts.skytruth.org/timelapse/timelapse_frame.html"
+            width="640px" height="480px"
+            border="0" frameborder="0" scrolling="no">
+    </iframe>
+  </body>
+</html>
+
