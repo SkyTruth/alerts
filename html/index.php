@@ -129,6 +129,7 @@ function rss () {
 <script type="text/javascript"> 
 //<![CDATA[
     mapOptions.feedParams.channel = 'local';
+    <?php echo 'mapOptions.feedParams.show = "'.$parsed_params['show'].'";'."\n"; ?>
 <?php if (!empty ($data['map_bounds'])) { ?>
     mapOptions.bounds = new google.maps.LatLngBounds (new google.maps.LatLng(<?php echo $data['map_bounds'][0][0] ?>, <?php echo $data['map_bounds'][0][1] ?> ), 
         new google.maps.LatLng(<?php echo $data['map_bounds'][1][0] ?>, <?php echo $data['map_bounds'][1][1] ?>));

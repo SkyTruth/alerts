@@ -15,6 +15,7 @@ function default_feed_params ()
     $params['max_results'] = 50;    // maximum number of results to return
     $params['nosidebar'] = 0;       // if non-zero, suppress the display of the sidebar in an embedded map
     $params['output_template'] = 'rss';           // output format
+    $params['show'] = 'published';  // do we show draft alerts? NO unless value is 'draft' or 'draftonly'
     $params['sort'] = 'DESC';       // sort_direction
     $params['tags'] = array();      // list of tags
     $params['tag'] = array();       // alias for tags
@@ -168,6 +169,17 @@ function parse_feed_params($request)
         $params['debug'] = 1;
     }
     
+    if (array_key_exists('show', $request))
+    {
+        if (strtolower($request['show']) == 'draft')
+        {
+            $params['show'] = 'draft';
+        }
+        if (strtolower($request['show']) == 'draftonly')
+        {
+            $params['show'] = 'draftonly';
+        }
+    }
     return $params;
 }
 
@@ -199,6 +211,10 @@ function build_feed_url ($params)
                 break;
             case 'channel':
                 if ($value != $params['output_template'])
+                    $url_params[$key] = $value;
+                break;
+            case 'show':
+                if (!empty($value))
                     $url_params[$key] = $value;
                 break;
             default:
@@ -237,7 +253,7 @@ function build_feed_query_sql($params)
 
     if ($params['after'])
         $where_sql .= " AND $date_sort_field > '${params['after']}'";
-    	
+
     if ($params['bounds'])
     {
     	$where_sql .= ' AND fe.lat>= ' . $params['bounds'][0][0];  
@@ -291,8 +307,18 @@ function build_feed_query_sql($params)
     	if (sizeof($params['dates']) >= 2)
     		$where_sql .= " AND $date_sort_field <= TIMESTAMP '{$params['dates'][1]}' + INTERVAL '1 day'";
     }
-
-    $where_sql .= " AND fe.status = 'published'";
+    if ($params['show']=='draftonly')
+    {
+        $where_sql .= " AND fe.status = 'draft'";
+    }
+    else if ($params['show']=='draft')
+    {
+        $where_sql .= " AND fe.status in ('draft', 'published')";
+    }
+    else
+    {
+        $where_sql .= " AND fe.status = 'published'";
+    }
 
     $order_sql = "fe.$date_sort_field {$params['sort']}";
     
