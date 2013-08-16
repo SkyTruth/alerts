@@ -292,6 +292,8 @@ function build_feed_query_sql($params)
     		$where_sql .= " AND $date_sort_field <= TIMESTAMP '{$params['dates'][1]}' + INTERVAL '1 day'";
     }
 
+    $where_sql .= " AND fe.status = 'published'";
+
     $order_sql = "fe.$date_sort_field {$params['sort']}";
     
     $sql = "select fe.*, fs.name as source_name, to_char(fe.published, 'YYYY-MM-DD\"T\"HH24:MI:SS.MS+00:00') published_formatted,published as published_sequential" .
