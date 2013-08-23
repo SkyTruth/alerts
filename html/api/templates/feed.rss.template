@@ -22,7 +22,7 @@ foreach ($data['items'] as $row)
   <entry>
     <title><?php echo htmlentities($row['title']) ?></title>
     <link rel="alternate" href="<?php echo $row['report_url']?>"/>
-    <id>urn:uuid:<?php echo $row['id']?></id>
+    <id>urn:uuid:<?php echo str_pad($row['id'],36,'0')?></id>
     <updated><?php echo $row['published_formatted']?></updated>
     <published><?php echo $row['published_formatted']?></published>
     <summary><?php echo htmlentities($row['summary'])?></summary>
