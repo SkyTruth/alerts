@@ -1,0 +1,81 @@
+<html>
+  <head>
+    <title>Timelapse</title>
+    <!--<script src="jquery-1.10.1.min.js"></script>-->
+    <script src="postmessage.js"></script>
+    <script type="text/javascript">
+      function getQuerystring2(key, default_) 
+      { 
+          if (default_==null) 
+          { 
+              default_=""; 
+          } 
+          var search = unescape(location.search);    
+          if (search == "") 
+          { 
+              return default_; 
+          } 
+          search = search.substr(1); 
+          var params = search.split("&"); 
+          for (var i = 0; i < params.length; i++) 
+          { 
+              var pairs = params[i].split("="); 
+              if(pairs[0] == key) 
+              { 
+                  return pairs[1]; 
+              } 
+          } 
+          return default_; 
+      };
+    </script>
+
+    <script type="text/javascript">
+      function show_timelapse(lat, lng, zoom, play, warp) {
+          if (lat  === null || lat  === '') {lat = "34.3454"; } ;
+          if (lng  === null || lng  === '') {lng = "16.5543"; } ;
+          if (zoom === null || zoom === '') {zoom = "0.1"; } ;
+          if (play === null || play === '') {play = "false"; } ;
+          if (warp === null || warp === '') {warp = "false"; } ;
+          play = play === 'true';
+          warp = warp === 'true';
+          pm({
+            target: window.frames["time_machine_frame"],
+            type:"timemachine-set-view", 
+            data:{
+              doPlay: play,
+              doWarp: warp,
+              view: {
+                center: {
+                  lat: lat,
+                  lng: lng
+                 } ,
+                zoom: zoom
+               } 
+             } ,
+            success: function(data) { console.log(data);  } 
+           } );
+       } ;
+    </script>
+
+    <script type="text/javascript">
+      function show_url_timelapse() {
+          show_timelapse(
+            getQuerystring2('lat'),
+            getQuerystring2('lng'),
+            getQuerystring2('zoom'),
+            getQuerystring2('play'),
+            getQuerystring2('warp'))
+      };
+    </script>
+
+  </head>
+  <body>
+    <iframe name="time_machine_frame" id="time_machine_frame" 
+            src="http://earthengine.google.org/timelapse/timelapseplayer_v2.html?timelapseclient=http://earthengine.google.org/timelapse/data" 
+            border="0" frameborder="0" scrolling="no"
+            width="100%" height="100%" 
+            onload="show_url_timelapse()">
+    </iframe>
+  </body>
+</html>
+
