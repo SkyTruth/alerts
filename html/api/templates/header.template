@@ -1,4 +1,6 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<?php $HTTP = isset($_SERVER['HTTPS']) ? 'https' : 'http'; 
+?>
 <html xmlns="http://www.w3.org/1999/xhtml"
     xmlns:og="http://ogp.me/ns#"
     xmlns:fb="http://www.facebook.com/2008/fbml">
@@ -15,7 +17,7 @@
 
 <?php if ($data['use_maps']) { ?>
 
-<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false" type="text/javascript"></script>
+<script type="text/javascript" src="<? echo $HTTP ?>://maps.googleapis.com/maps/api/js?sensor=false" type="text/javascript"></script>
     <script type="text/javascript" src="/js/map.js"></script>
     <script type="text/javascript" src="/css/style.js"></script>
 <?php } ?>
