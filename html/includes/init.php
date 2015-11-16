@@ -16,5 +16,6 @@ mysql_select_db($CONFIG['DBNAME'], $db);
 
 $geodb = pg_connect("host={$CONFIG['GEODBHOST']} dbname={$CONFIG['GEODBNAME']} user={$CONFIG['GEODBUSER']} password={$CONFIG['GEODBPASS']}");
 
+$HTTP = isset($_SERVER['HTTPS']) ? 'https' : 'http';
 
 ?>
